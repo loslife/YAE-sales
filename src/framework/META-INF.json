@@ -1,0 +1,33 @@
+{
+    "interface": {
+        "services": {
+
+        },
+        "sdk": {
+
+        },
+        "url": {
+
+        },
+        "fragment": {
+
+        }
+    },
+    "services": [
+
+    ],
+    "statics": [
+        {
+            "name": "framework",
+            "path": "/framework",
+            "comment": "美甲大咖cms框架"
+        }
+    ],
+    "dataModelSchema": [
+    ],
+    "configuration": {
+
+    },
+    "errorHandler": [
+    ]
+}

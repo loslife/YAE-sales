@@ -1,0 +1,5 @@
+NameError: variable @body-bg is undefined in /Users/ganyue/yilos/chain/src/framework/static/css/less/app.layout.less on line 22, column 21:
+21 		z-index: -1;
+22 		background-color: @body-bg;
+23 		border: inherit;
+

@@ -1,0 +1,131 @@
+@baseSize: 10px;
+@baseRadiusSize: 5px;
+
+/**背景元素颜色**/
+@color-background: #f1f1f1;
+@color-background-step: #cbcbcb;
+@color-background-header: #ff436d;
+@color-background-tips: #f5d870;
+
+/**文字元素颜色**/
+@color-font-normal: #363636;
+@color-font-disabled: #9c9c9c;
+@color-font-label: #363636;
+@color-font-enhance: #000;
+@color-font-error: #cc3657;
+@color-font-btn: #fff;
+@color-font-special: #b8295f;
+@color-font-light: #7accbe;
+@color-font-note: #f8f6c0;
+@color-font-money-enhance: #b8295f;
+/**线框元素颜色**/
+@color-border-normal: #cbcbcb;
+@color-border-edit: #9c9c9c;
+@color-border-edit-shallow: #c9c9c9;
+
+/**点击元素颜色**/
+@color-click-normal: #7accbe;
+@color-click-normal-active: #62a398;
+@color-click-grey: #f1f1f1;
+@color-click-grey-active: #cbcbcb;
+@color-click-light: #ff436d;
+@color-click-light-active: #cc3657;
+
+/**生成函数**/
+.flexbox () {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  -moz-box-align: center;
+  -webkit-box-align: center;
+  -o-box-align: center;
+  box-align: center;
+}
+
+.flex (@flex: 1) {
+  -moz-box-flex: @flex;
+  -webkit-box-flex: @flex;
+  box-flex: @flex;
+}
+
+.transform() {
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.triangle() {
+  content: ' ';
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+/**
+*生成箭头函数 >
+**/
+.arrows(@width:9px,@height:9px,@rotate:45deg) {
+  content: "";
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  border: #7accbe solid;
+  border-width: 2px 2px 0 0;
+  width: @width;
+  height: @height;
+  transform: rotate(@rotate);
+  -webkit-transform: rotate(@rotate);
+}
+
+/**按钮生成函数**/
+.y_btn_fn(@fontSize:1.1666rem,@width:auto,@height:2.1666rem) {
+  text-align: center;
+  font-size: @fontSize;
+  width: @width;
+  padding: 0 1rem;
+  height: @height;
+  line-height: @height;
+  display: inline-block;
+  color: @color-font-btn;
+  background-color: @color-click-normal;
+  border-radius: 5px;
+}
+
+.y_font_size(@size:12) {
+  font-size: unit(@size, px);
+}
+
+.y_icon_search() {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  background: url("imgs/search-icon.png");
+  background-size: 2rem 2rem;
+}
+
+.y_icon_delete_small() {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  background: url("imgs/delete-small-icon.png");
+  background-size: 2rem 2rem;
+}
+
+.y_keyValue_key_fn(@keyFontSize:1.2rem,@keyColor:#363636) {
+  font-size: @keyFontSize;
+  color: @keyColor;
+}
+
+.y_keyValue_value_fn(@valueFontSize:1.2rem,@valueColor:#9c9c9c) {
+  font-size: @valueFontSize;
+  color: @valueColor;
+}
+
+.transition(@time:1s){
+    -moz-transition-duration: @time;
+    -webkit-transition-duration: @time;
+    -o-transition-duration: @time;
+    transition-duration: @time;
+}

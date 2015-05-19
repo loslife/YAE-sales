@@ -1,0 +1,32 @@
+<div class="pl-0 ml-0 collapse pos-rlt navbar-collapse box-shadow {{app.settings.navbarCollapseColor}}">
+
+    <div class="navbar-left navbar-header {{app.settings.navbarHeaderColor}}">
+        <button class="pull-right visible-xs dk" ui-toggle-class="show" data-target=".navbar-collapse">
+            <i class="glyphicon glyphicon-cog"></i>
+        </button>
+        <button class="pull-right visible-xs" ui-toggle-class="off-screen" data-target=".app-aside" ui-scroll="app">
+            <i class="glyphicon glyphicon-align-justify"></i>
+        </button>
+        <a href="#/" class="navbar-brand text-lt LOGO.png fs-16">
+            <img src="img/logo_xml.png" alt="." style="max-height: 26px;">
+            <span class="hidden-folded m-l-xs" style="position: relative; top: 3px;">{{app.name}}</span>
+        </a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li class="hidden-xs">
+            <div style="height: 50px;">
+
+                <span class="fs-20 m-r" style="color: white;line-height: 50px; vertical-align: top;">Hi. {{userName}}</span>
+
+                <a href="/svc/chain/logout?u=xml">
+                    <button class="btn btn-rounded"
+                            style="background-color: #9684ca; border: none; border-radius: 4px; margin-top: 9px; margin-right:18px; color: white;">
+                        退出登录
+                    </button>
+                </a>
+            </div>
+        </li>
+    </ul>
+
+</div>
