@@ -1,0 +1,5 @@
+NameError: .transition is undefined in /Users/ganyue/yilos/chain/src/framework/static/css/less/app.nav.less on line 6, column 2:
+5 	margin-left: -20px;
+6 	.transition(all .2s ease-in-out 0s);
+7 
+

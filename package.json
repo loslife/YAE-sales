@@ -1,0 +1,13 @@
+{
+  "name": "yae-sales",
+  "version": "1.0.0",
+  "dependencies": {
+    "MD5": "1.2.1",
+    "async": "0.9.0",
+    "crypto": "0.0.3",
+    "jsdom": "^3.1.2",
+    "node-uuid": "1.4.0",
+    "request": "^2.55.0",
+    "underscore": "^1.8.2"
+  }
+}

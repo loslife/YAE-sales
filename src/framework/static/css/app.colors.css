@@ -1,0 +1,5 @@
+NameError: variable @brand-primary is undefined in /Users/ganyue/yilos/chain/src/framework/static/css/less/app.colors.less on line 82, column 15:
+81 
+82 .text-wariant(@brand-primary, primary);
+83 .text-wariant(@brand-info, info);
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta content="telephone=no" name="format-detection" />
+    <title>美甲大咖</title>
+    <link href="http://static.yilos.com/wx/static/css/base.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://static.yilos.com/wx/static/css/index.css?v=4">
+    <script type="text/javascript" src="http://static.yilos.com/wx/static/js/zepto.min.js"></script>
+    <script type="text/javascript" src="http://static.yilos.com/wx/static/js/swipeSlide.min.js"></script>
+    <script type="text/javascript" src="http://static.yilos.com/wx/static/js/index.js?v=3"></script>
+</head>
+<body>
+<div class="carousel" id="carousel">
+    <ul class="carousel_list">
+        <% for(var i=0;i<posters.length;i++){ %>
+        <li><a class="carouselPoster" href="http://static.yilos.com/wx/html/video_detail.html?topicId=<%= posters[i].topicId %>"><img src="<%= posters[i].picUrl %>"></a></li>
+        <% } %>
+    </ul>
+    <div class="dot db bo-h bp-c">
+        <% for(var i=0;i<posters.length;i++){ %>
+        <span></span>
+        <% } %>
+    </div>
+</div>
+<div style="height:0.5em;"></div>
+<% for(var i=0;i<categories.length;i++){ %>
+<div class="categoryContent">
+    <div class="categoryTitle">
+        <div class="leftTitle">&nbsp;&nbsp;<%= categories[i].categoryName %></div>
+        <a href="http://static.yilos.com/wx/html/more.html?categoryId=<%= categories[i].categoryId %>&categoryName=<%= categories[i].categoryName %>" class="more" id="<%= categories[i].categoryId %>">更多&nbsp;<img src="http://www.yilos.com/wx/static/images/right_arrow.png"></a>
+    </div>
+    <% for(var j=0;j<categories[i].topics.length;j++){ %>
+    <a class="topicBox" href="http://static.yilos.com/wx/html/video_detail.html?topicId=<%= categories[i].topics[j].topicId %>">
+        <div class="topicPoster" style="background:url('<%= categories[i].topics[j].thumbUrl %>');background-size: cover"></div>
+        <p class="topicTitle"><%= categories[i].topics[j].title %></p>
+        <div class="topicInfor db bo-h bp-j ba-c">
+            <img src="<%= categories[i].topics[j].photoUrl %>" >
+            <div class="authorName bf-2" ><%= categories[i].topics[j].author %></div>
+            <div class="topicTime bf-1"><%= categories[i].topics[j].createDate %></div>
+        </div>
+    </a>
+
+    <% } %>
+    <% if(categories[i].topics.length%2!=0){ %>
+    <a class="topicBox">
+
+    </a>
+    <% } %>
+</div>
+<% } %>
+<div style="height:3em;"></div>
+<div id="download_app">
+    <div>下载美甲大咖，和小伙伴一起学美甲！<a href="http://s.yilos.com">立即下载</a></div>
+</div>
+</body>
+</html>
