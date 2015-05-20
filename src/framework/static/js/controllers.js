@@ -30,7 +30,7 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies', 'ngAni
 
             // config
             $scope.app = {
-                name: '美甲大咖后台系统',
+                name: '推广销售辅助系统',
                 version: '1.3.1',
                 // for chart colors
                 color: {

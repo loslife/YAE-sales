@@ -7,7 +7,7 @@
             "ip": "127.0.0.1",
             "port": 5011,
             "protocol": "http",
-            "baseurl": "http://192.168.1.109:5011/sales",
+            "baseurl": "http://127.0.0.1:5011/sales",
             "workerno": 1,
             "applications": [
                 "framework",
@@ -18,17 +18,11 @@
     ],
     "dataServer": {
         "mysql": {
-            "ip": "yilosread.mysql.rds.aliyuncs.com",
+            "ip": "yilosdev.mysql.rds.aliyuncs.com",
             "port": 3306,
             "user": "yilos_dev",
-            "password": "yilos123456",
-            "dbName": "planx_graph"
-        },
-        "chainmysql": {
-            "ip": "yilosread.mysql.rds.aliyuncs.com",
-            "port": 3306,
-            "user": "yilos_dev",
-            "password": "yilos123456"
+            "password": "yilos_dev",
+            "dbName": "tuiguang"
         }
     },
     "clientAccess": {
