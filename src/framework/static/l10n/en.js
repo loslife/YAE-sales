@@ -8,8 +8,8 @@
     },
     "qrcode":{
         "title":"活动管理",
-        "menu_qrcode":"二维码",
-        "menu_tags":"标签"
+        "menu_qrcode":"二维码管理",
+        "menu_tags":"标签管理"
     },
     "activities":{
         "title":"求教程管理",

@@ -68,6 +68,25 @@ var app = angular.module('app', [
                                 );
                             }]
                     }
+                }).state('app.tags', {
+                    url: '/tags',
+                    templateUrl: '/qrcode/tags.html',
+                    resolve: {
+                        deps: ['uiLoad','$ocLazyLoad',
+                            function (uiLoad,$ocLazyLoad) {
+                                return $ocLazyLoad.load('ngGrid').then(
+                                    function(){
+                                        return uiLoad.load(['/qrcode/tags.js',
+                                            'js/jquery/fileupload/tmpl.min.js',
+                                            'js/jquery/fileupload/jquery.ui.widget.js',
+                                            'js/jquery/fileupload/load-image.all.min.js',
+                                            'js/jquery/fileupload/canvas-to-blob.min.js',
+                                            'js/jquery/fileupload/jquery.iframe-transport.js'
+                                        ]);
+                                    }
+                                );
+                            }]
+                    }
                 });
         }
     ]

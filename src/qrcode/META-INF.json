@@ -17,6 +17,69 @@
             "auth": false,
             "impl": "qrcode.addActivity",
             "comment": "添加活动"
+        },{
+            "name": "queryActivity",
+            "path": "/activity/queryActivity",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.queryActivity",
+            "comment": "查询所有活动"
+        },{
+            "name": "addTag",
+            "path": "/activity/addTag/:tagName",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.addTag",
+            "comment": "添加标签"
+        },{
+            "name": "queryAllTags",
+            "path": "/activity/queryAllTags",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.queryAllTags",
+            "comment": "查询所有标签"
+        },{
+            "name": "addEntities",
+            "path": "/activity/addEntities",
+            "method": "post",
+            "auth": false,
+            "impl": "qrcode.addEntities",
+            "comment": "添加实体"
+        },{
+            "name": "queryAllEntities",
+            "path": "/activity/queryAllEntities",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.queryAllEntities",
+            "comment": "查询所有实体"
+        },{
+            "name": "delActivity",
+            "path": "/activity/delActivity/:id",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.delActivity",
+            "comment": "删除活动"
+        },{
+            "name": "updateActivity",
+            "path": "/activity/updateActivity/:id",
+            "method": "post",
+            "auth": false,
+            "impl": "qrcode.updateActivity",
+            "comment": "更新活动"
+        },{
+            "name": "delEntity",
+            "path": "/activity/delEntity/:id",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.delEntity",
+            "comment": "删除二维码"
+        },{
+            "name": "updateEntity",
+            "path": "/activity/updateEntity/:id",
+            "method": "post",
+            "auth": false,
+            "impl": "qrcode.updateEntity",
+            "comment": "更新二维码"
         }
     ],
     "statics": [

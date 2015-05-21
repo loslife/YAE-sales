@@ -9,21 +9,45 @@
 
      <div class="panel b-a">
 
-          <div class="panel-heading b-b b-light">活动管理</div>
+          <div class="panel-heading b-b b-light">二维码管理</div>
           <div class="panel-body">
                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-activity">添加活动</button>
           </div>
      </div>
 
-     <div class="">
-          <accordion close-others="oneAtATime">
-               <accordion-group is-open="status.open" class="b-info">
-                    <accordion-heading>
-                         I can have markup, too! <i class="pull-right fa fa-angle-right" ng-class="{'fa-angle-down': status.open, 'fa-angle-right': !status.open}"></i>
-                    </accordion-heading>
-                    This is just some content to illustrate fancy headings.
-               </accordion-group>
-          </accordion>
+     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default" ng-repeat="activity in viewData.activities">
+               <div class="panel-heading" role="tab" id="heading{{$index+1}}">
+                    <h4 class="panel-title">
+                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index+1}}" aria-expanded="false" aria-controls="collapse{{$index+1}}">
+                              {{activity.name}}
+                         </a>
+                    </h4>
+               </div>
+               <div id="collapse{{$index+1}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index+1}}">
+                    <div class="panel-body">
+                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-qrcode" ng-click="sendId(activity)">添加二维码</button>
+                         <button type="button" class="btn btn-info" data-toggle="modal" data-target=".update-activity" ng-click="sendId(activity)">编辑本活动</button>
+                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".del-activity" ng-click="sendId(activity)">删除本活动</button>
+                    </div>
+                    <div class="panel-body">
+                         <div class="col-md-2" ng-repeat="entity in viewData.entities | filter:{activity_id: activity.id}">
+                              <div class="thumbnail">
+                                   <a>
+                                        <img src="{{entity.qrcode_url}}" >
+                                   </a>
+                                   <div class="caption">
+                                        <h4>{{entity.name}}</h4>
+                                        <p>被扫次数：0</p>
+                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target=".update-entity" ng-click="translate(entity)">编辑</button>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".del-entity" ng-click="translate(entity)">删除</button>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+
+               </div>
+          </div>
      </div>
 
 
@@ -37,7 +61,7 @@
                     <div class="modal-body center-block">
                          <fieldset>
                               <div class="form-group col-md-12 col-md-offset-1">
-                                   <h4 class="col-md-2" style="float:left;line-height: 20px;">活动名称:</h4>
+                                   <h4 class="col-md-2" style="float:left;line-height: 15px;">活动名称:</h4>
                                    <div class="form-group col-md-7">
                                         <input type="text" class="form-control" ng-model="activity.name" />
                                    </div>
@@ -52,5 +76,151 @@
           </div>
      </div>
 
+     <div class="modal fade add-qrcode" arid-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                         <h4 class="modal-title">添加二维码</h4>
+                    </div>
+                    <div class="modal-body center-block">
+                         <fieldset>
+                              <div class="form-group col-md-12 col-md-offset-1">
+                                   <h4 class="col-md-3" style="float:left;">&nbsp;&nbsp;&nbsp;&nbsp;二 维 码 名 称:</h4>
+                                   <div class="form-group col-md-7">
+                                        <input type="text" class="form-control" ng-model="activitiesData.qrcodeName" />
+                                   </div>
+                              </div>
+                         </fieldset>
+                         <fieldset>
+                              <div class="col-md-12 col-md-offset-1">
+                                   <h4 class="col-md-3" style="float:left">&nbsp;&nbsp;&nbsp;&nbsp;二 维 码 类 型:</h4>
+                                   <div class="form-group col-md-7">
+                                        <select class="form-control"  ng-model="activitiesData.qrcodeType">
+                                             <option value="normal">普通URL二维码</option>
+                                             <option value="meiguanjia">美业管家公众号</option>
+                                        </select>
+                                   </div>
+                              </div>
+                         </fieldset>
+                         <fieldset ng-if="activitiesData.qrcodeType == 'normal'">
+                              <div class="col-md-12 col-md-offset-1">
+                                   <h4 class="col-md-3" style="float:left;text-align:right;">&nbsp;&nbsp;&nbsp;&nbsp;URL:</h4>
+                                   <div class="form-group col-md-7">
+                                        <input type="text" class="form-control" ng-model="activitiesData.qrcodeUrl" />
+                                   </div>
+                              </div>
+                         </fieldset>
+                         <fieldset>
+                              <div class="col-md-12 col-md-offset-1">
+                                   <h4 class="col-md-3" style="float:left;text-align:right;">标签:</h4>
+                                   <div class="form-group col-md-7">
+                                        <label class="checkbox-inline i-checks" style="margin-top:8px;" ng-repeat="tag in viewData.tags">
+                                             <input type="checkbox" name="tag_ids" value="{{tag.id}}" ng-click="toggleTagSelection(tag.id)"><i></i>{{tag.name}}
+                                        </label>
+                                   </div>
+                              </div>
+                         </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                         <button type="button" class="btn btn-primary" ng-click="addQrcode()">确认</button>
+                    </div>
+               </div>
+          </div>
+     </div>
 
+     <div class="modal fade del-activity" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                         <h4 class="modal-title">删除活动</h4>
+                    </div>
+                    <div class="modal-body center-block">
+                         <fieldset>
+                              <div class="form-group col-md-12">
+                                   <h4 class="col-md-12 text-center">确认删除{{delActivitiesData.name}}？</h4>
+                              </div>
+                         </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                         <button type="button" class="btn btn-primary" ng-click="delActivity()">确认</button>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <div class="modal fade update-activity" arid-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                         <h4 class="modal-title">编辑活动</h4>
+                    </div>
+                    <div class="modal-body center-block">
+                         <fieldset>
+                              <div class="form-group col-md-12 col-md-offset-1">
+                                   <h4 class="col-md-2" style="float:left;line-height: 15px;">活动名称:</h4>
+                                   <div class="form-group col-md-7">
+                                        <input type="text" class="form-control" ng-model="delActivitiesData.name" />
+                                   </div>
+                              </div>
+                         </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                         <button type="button" class="btn btn-primary" ng-click="updateActivity()">确认</button>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <div class="modal fade del-entity" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                         <h4 class="modal-title">删除二维码</h4>
+                    </div>
+                    <div class="modal-body center-block">
+                         <fieldset>
+                              <div class="form-group col-md-12">
+                                   <h4 class="col-md-12 text-center">确认删除{{entityData.name}}？</h4>
+                              </div>
+                         </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                         <button type="button" class="btn btn-primary" ng-click="delEntity()">确认</button>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <div class="modal fade update-entity" arid-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                         <h4 class="modal-title">编辑二维码</h4>
+                    </div>
+                    <div class="modal-body center-block">
+                         <fieldset>
+                              <div class="form-group col-md-12 col-md-offset-1">
+                                   <h4 class="col-md-2" style="float:left;line-height: 15px;">二维码名称:</h4>
+                                   <div class="form-group col-md-7">
+                                        <input type="text" class="form-control" ng-model="entityData.name" />
+                                   </div>
+                              </div>
+                         </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                         <button type="button" class="btn btn-primary" ng-click="updateEntity()">确认</button>
+                    </div>
+               </div>
+          </div>
+     </div>
 </div>
