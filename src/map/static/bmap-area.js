@@ -1,4 +1,6 @@
-var dbHelper = require(FRAMEWORKPATH + "/utils/dbHelper");
+//var dbHelper = require(FRAMEWORKPATH + "/utils/dbHelper");
+
+//exports.testGet = testGet();
 
 // 百度地图API功能
 var map = new BMap.Map("map");
@@ -207,14 +209,14 @@ function makeSureStyle() {
 function makeSureDraw() {
     closeDraw();
     var sql = "select * from tuiguang.pins where id = :id;";
-    dbHelper.execSql(sql, {id: 1}, function(err, results){
-        if(err){
-            return ;
-        }
-
-        var result = [];
-        result.push(results);
-    });
+    //dbHelper.execSql(sql, {id: 1}, function(err, results){
+    //    if(err){
+    //        return ;
+    //    }
+    //
+    //    var result = [];
+    //    result.push(results);
+    //});
 }
 
 //创建控件
@@ -374,4 +376,8 @@ function show() {
 }
 
 window.onload = showNailStore;
+
+function testGet(){
+    alert("你好！");
+}
 
