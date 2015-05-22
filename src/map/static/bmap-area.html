@@ -4,63 +4,30 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
-        body{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
-        #allmap {width: 100%; height:500px; overflow: hidden;}
-        #result {width:100%;font-size:12px;}
-        dl,dt,dd,ul,li{
+        body{
+            width: 100%;
+            height: 100%;
             margin:0;
-            padding:0;
-            list-style:none;
-        }
-        p{font-size:12px;}
-        dt{
-            font-size:14px;
             font-family:"微软雅黑";
-            font-weight:bold;
-            border-bottom:1px dotted #000;
-            padding:5px 0 5px 5px;
-            margin:5px 0;
         }
-        dd{
-            padding:5px 0 0 5px;
-        }
-        li{
-            line-height:28px;
+
+        #allmap {
+            width: 100%;
+            height:500px;
+            overflow: hidden;
         }
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=C739fdeec7706c19753d59798c3ae297"></script>
     <!--加载鼠标绘制工具-->
     <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
-    <style type="text/css">
-        .BMapLib_Drawing_panel{height:47px;border:1px solid #666;border-radius:5px;overflow:hidden;box-shadow:1px 1px 3px rgba(0,0,0,0.3);float:left}
-        .BMapLib_Drawing .BMapLib_box{border-right:1px solid #d2d2d2;float:left;height:100%;width:64px;height:100%;background-image:url(http://api.map.baidu.com/library/DrawingManager/1.4/src/bg_drawing_tool.png);cursor:pointer}
-        .BMapLib_Drawing .BMapLib_last{border-right:0}
-        .BMapLib_Drawing .BMapLib_hander{background-position:0 0}
-        .BMapLib_Drawing .BMapLib_hander_hover{background-position:0 -52px}
-        .BMapLib_Drawing .BMapLib_marker{background-position:-65px 0}
-        .BMapLib_Drawing .BMapLib_marker_hover{background-position:-65px -52px}
-        .BMapLib_Drawing .BMapLib_circle{background-position:-130px 0}
-        .BMapLib_Drawing .BMapLib_circle_hover{background-position:-130px -52px}
-        .BMapLib_Drawing .BMapLib_polyline{background-position:-195px 0}
-        .BMapLib_Drawing .BMapLib_polyline_hover{background-position:-195px -52px}
-        .BMapLib_Drawing .BMapLib_polygon{background-position:-260px 0}
-        .BMapLib_Drawing .BMapLib_polygon_hover{background-position:-260px -52px}
-        .BMapLib_Drawing .BMapLib_rectangle{background-position:-325px 0}
-        .BMapLib_Drawing .BMapLib_rectangle_hover{background-position:-325px -52px}
-    </style>
-    <!--<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />-->
-    <!--加载检索信息窗口-->
-    <script type="text/javascript" src="DrawingManager.js"></script>
-    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
+    <!--加载检索工具-->
+    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
     <title>战略地图</title>
 </head>
 <body>
 <div id="allmap" style="overflow:hidden;zoom:1;position:relative;">
     <div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
-</div>
-<div id="result">
-    <input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
-    <input type="button" value="展示区域" onclick="show()">
 </div>
 </body>
 <script src="bmap-area.js"></script>
