@@ -2,7 +2,6 @@
 var map = new BMap.Map("map");
 
 var index = 0;
-var getCount = 0;
 var myGeo = new BMap.Geocoder();
 
 //获取地址解析成百度地图上的点，再显示出来
@@ -15,10 +14,6 @@ var mapArea;
 function init(){
     mapData = JSON.parse(replaceSpecialChar(pageData));
 
-    //创建控件
-    var drawCtr = new drawController();
-    map.addControl(drawCtr);
-
     storeMessage = mapData.store
     mapArea = mapData.area || "南京";
 
@@ -30,14 +25,6 @@ function init(){
     }
 
     if(mapData.regionPoints){
-        getCount = mapData.regionPoints.length;
-        var showCircle = "";
-        for(var i = 0; i < getCount; i++){
-            var str = (i + 1) +"." +mapArea + "区" + (i + 1) + "号战地<br/><br/>";
-            showCircle += str;
-        }
-
-        document.getElementById("allList").innerHTML = showCircle;
         show(mapData.regionPoints);
     }
 

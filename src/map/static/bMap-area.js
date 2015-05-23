@@ -288,8 +288,8 @@ function makeSureDraw() {
     var areaPoints = [];
     var showCircle = "";
     var name = [];
-    for(var i = 0; i < saveCount + getCount; i++){
-        var str = (i + 1) +"." +mapArea + "区" + (i + 1) + "号战地<br/><br/>";
+    for(var i = 1; i <= saveCount + getCount; i++){
+        var str = i +"." +mapArea + "区" + i + "号战地<br/><br/>";
         showCircle += str;
     }
 
@@ -301,7 +301,7 @@ function makeSureDraw() {
 
     for(var i = exitPoints; i < saveCount; i++){
         areaPoints.push(overlays[i].W);
-        name.push(i + getCount);
+        name.push(i + 1 + getCount);
     }
 
     $.post('/sales/map/postPins',

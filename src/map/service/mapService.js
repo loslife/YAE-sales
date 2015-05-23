@@ -61,7 +61,7 @@ function showArea(req, res, next){
                 return ;
             }
 
-            store = result[0];
+            store = result;
             callback(null);
         });
     }
@@ -109,10 +109,102 @@ function showArea(req, res, next){
 }
 
 function showRegion(req, res, next){
+    var areaRegion = req.params["area"];
+    var region =req.params["region"];
+    var regionData = [];
+    var regionStores = [];
+    var regionsCircle = [];
+    var regionsPoints = [];
 
-    var region =  req.params["region"]
+    async.series([getArea, getStores, getAreaRegions, getAreaRegionPoints], function(err, result){
+        if(err === "empty"){
+            area = "nanjing";
+            res.render("region", {layout: false, area: "南京", level: 13,store: [], regionPoints: []});
+            return ;
+        }
 
-    res.render("region", {layout: false, region: region});
+        if(err){
+            return;
+        }
+
+        res.render("region", {layout: false, area: regionData.center, level: regionData.level,store: regionStores, regionPoints: regionsPoints});
+        regionsPoints = [];
+    });
+
+    function getArea(callback){
+        var sql = "select * from areas where name = :name;";
+
+        dbHelper.execSql(sql, {name: areaRegion}, function(error, result){
+            if(error){
+                callback(error);
+                return ;
+            }
+
+            regionData = result[0];
+            if(!regionData){
+                callback("empty");
+                return ;
+            }
+            callback(null);
+            return ;
+        });
+    }
+
+    function getStores(callback){
+        var sql = "select * from pins where area_id = :area_id;";
+
+        dbHelper.execSql(sql, {area_id: regionData.id}, function(error, result){
+            if(error){
+                callback(error);
+                return ;
+            }
+
+            regionStores = result;
+            callback(null);
+        });
+    }
+
+    function getAreaRegions(callback){
+        var sql = "select * from regions where area_id = :area_id and name = :name;";
+
+        dbHelper.execSql(sql, {area_id: regionData.id, name: region}, function(error, result){
+            if(error){
+                callback(error);
+                return ;
+            }
+
+            _.each(result, function(item){
+                regionsCircle.push(item.id);
+            });
+            callback(null);
+        });
+    }
+
+
+    function getAreaRegionPoints(callback){
+        var sql = "select * from region_points";
+
+        dbHelper.execSql(sql, {}, function(error, result){
+            if(error){
+                callback(error);
+                return ;
+            }
+
+            _.each(regionsCircle, function(region_id){
+                var regions = [];
+                _.each(result, function(item){
+                    if(region_id == item.region_id){
+                        regions.push({lat: item.lat, lng: item.lng});
+                    }
+                });
+
+                regionsPoints.push(regions);
+            });
+
+            regionsCircle = [];
+            callback(null);
+        });
+    }
 }
 
 function postPins(req, res, next){
