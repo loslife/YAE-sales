@@ -4,7 +4,8 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
     $scope.viewData = {
         activities: [],
         tags: [],
-        entities: []
+        entities: [],
+        tag_entity:[]
     };
 
     $scope.activitiesData = {
@@ -21,7 +22,9 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
 
     $scope.entityData = {
         id:"",
-        name:""
+        name:"",
+        entity_has_tags:[],
+        entity_has_tagIds:[]
     };
 
     init();
@@ -30,19 +33,25 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
         var url = "/sales/activity/queryActivity";
         var tag_url = "/sales/activity/queryAllTags";
         var entity_url = "/sales/activity/queryAllEntities";
+        var entity_has_tag_url = "/sales/activity/queryEntityHasTags";
         $http.get(url).success(function(data){
             if(data.code == 0){
                 $scope.viewData.activities = data.result;
-                $http.get(entity_url).success(function(result){
-                    if(result.code == 0){
-                        $scope.viewData.entities = result.result;
-                    }
-                });
+            }
+        });
+        $http.get(entity_url).success(function(result){
+            if(result.code == 0){
+                $scope.viewData.entities = result.result;
             }
         });
         $http.get(tag_url).success(function(data){
             if(data.code == 0){
                 $scope.viewData.tags = data.result;
+            }
+        });
+        $http.get(entity_has_tag_url).success(function(data){
+            if(data.code == 0){
+                $scope.viewData.tag_entity = data.result;
             }
         });
     }
@@ -116,11 +125,24 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
     $scope.translate = function(entity){
         $scope.entityData.id = entity.id;
         $scope.entityData.name = entity.name;
+        $scope.entityData.entity_has_tags = _.filter($scope.viewData.tag_entity, function(obj){
+            return obj.entity_id == entity.id;
+        });
+        $scope.entityData.entity_has_tagIds = _.pluck($scope.entityData.entity_has_tags, "tag_id");
+    };
+    $scope.toggleTagSelection2 = function(id){
+        var idx = $scope.entityData.entity_has_tagIds.indexOf(id);
+        if (idx > -1) {
+            $scope.entityData.entity_has_tagIds.splice(idx, 1);
+        }
+        else {
+            $scope.entityData.entity_has_tagIds.push(tagId);
+        }
     };
 
     $scope.updateEntity = function(){
         var url = "/sales/activity/updateEntity/" + $scope.entityData.id;
-        $http.post(url, {name:$scope.entityData.name}).success(function(data){
+        $http.post(url, {name:$scope.entityData.name,tags:$scope.entityData.entity_has_tagIds}).success(function(data){
             if(data.code == 0){
                 init();
                 $(".update-entity").modal('hide');
@@ -138,6 +160,15 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
         });
     };
 
+   $scope.toggleTagSelection2 = function(id){
+       var idx = $scope.entityData.entity_has_tagIds.indexOf(id);
+       if (idx > -1) {
+           $scope.entityData.entity_has_tagIds.splice(idx, 1);
+       }
+       else {
+           $scope.entityData.entity_has_tagIds.push(tagId);
+       }
+   };
 
 
 }]);

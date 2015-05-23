@@ -1,0 +1,57 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm bg-light" ng-init="app.settings.asideFixed = true;app.settings.asideDock = false;app.settings.container = false;app.hideAside = false;app.hideFooter = true" ng-controller="TagsListCtrl">	
+	<div class="wrapper-md" >
+        <div class="panel panel-default text-center" style="margin-bottom: 0px;">
+            <div class="panel-heading ">
+                <span class="h-3 lh-3">渠道管理</span>
+            </div>
+        </div>
+        <div class="table-responsive text-center">
+            <div><span class="btn btn-primary" style="margin:20px auto;" data-toggle="modal" data-target="#addChannel">添加渠道</span></div>
+            <div class="panel panel-default">
+                <div ng-grid="gridOptions" style="min-height:490px"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 添加标签弹窗 -->
+    <div class="modal fade" tabindex="-1" id="addChannel" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin-top: 200px;">
+            <div class="modal-content">
+                <div class="panel panel-default" style="margin-bottom:0px;border:none;">
+                    <div class="panel-heading">新建渠道</div>
+                    <div class="row wrapper">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-center" style="line-height: 32px;">渠道名称</label>
+                            <div class="col-sm-11">
+                                <input type="text"  class="form-control" placeholder="渠道名称" ng-model="channel.name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addChannel()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 删除标签弹窗 -->
+    <div class="modal fade" tabindex="-1" id="deleteChannel" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin-top: 200px;">
+            <div class="modal-content">
+                <div class="panel panel-default" style="margin-bottom:0px;border:none;">
+                    <div class="panel-heading">确认删除</div>
+                    <div class="row wrapper">
+                        <div class="form-group">
+                            <p ng-model="channel.name">是否确认删除渠道：{{channel.name}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border:none;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="deleteChannel()">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    

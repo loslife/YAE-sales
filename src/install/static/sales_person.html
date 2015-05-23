@@ -1,0 +1,128 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm bg-light" ng-init="app.settings.asideFixed = true;app.settings.asideDock = false;app.settings.container = false;app.hideAside = false;app.hideFooter = true" ng-controller="TopicListCtrl">
+    <!--系列列表-->
+    <div class="col w-lg lt b-r">
+        <div class="vbox">
+            <div class="wrapper">
+                <div class="h4">渠道列表</div>
+            </div>
+            <div class="row-row">
+                <div class="cell scrollable hover">
+                    <div class="cell-inner">
+                        <div class="padder">
+                            <div class="list-group">
+                                <a ng-repeat="channel in channels " class="list-group-item b-l-{{channel.color}} b-l-3x hover-anchor" ng-class="{'hover': channel.selected }" ng-click="selectChannel(channel)">
+                                    <span class="block text-ellipsis">{{ channel.name? channel.name : 'Empty note' }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--新建主题区-->
+    <div class="panel b-a">
+        <div class="panel-heading b-b b-light">操作</div>
+        <div class="panel-body">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-person">添加专员</button>
+        </div>
+    </div>
+    <!--主题列表区-->
+    <div class="wrapper-md" >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                专员列表
+            </div>
+            <div class="table-responsive">
+                <div ng-grid="gridOptions" style="min-height:590px"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 新增模态框 -->
+    <div class="modal fade bs-example-modal-lg add-topic"  id="add-person">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">新增专员</h3>
+                </div>
+                <div class="modal-body wrapper-md">
+                    <div class="wrapper-md">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-center" style="line-height: 32px;">专员名称</label>
+                            <div class="col-sm-6">
+                                <input type="text"  class="form-control" ng-model="formData.name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wrapper-md">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label text-center" style="line-height: 32px;">渠道名称</label>
+                        <div class="col-sm-6">
+                            <select ng-model="formData.channelId" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
+                                <option value="{{channel.id}}" ng-repeat="channel in channels">{{channel.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" ng-click="addPerson()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 更新主题确认模态框框 -->
+    <div class="modal fade bs-example-modal-lg"  id="updata-person">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">编辑专员</h3>
+                </div>
+                <div class="modal-body wrapper-md">
+                    <div class="wrapper-md">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-center" style="line-height: 32px;">专员名称</label>
+                            <div class="col-sm-6">
+                                <input type="text"  class="form-control" ng-model="formData.name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wrapper-md">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-center" style="line-height: 32px;">渠道名称</label>
+                            <div class="col-sm-6">
+                                <select ng-model="formData.channel_id" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
+                                    <option value="{{channel.id}}" ng-repeat="channel in channels" ng-selected="channel.id == formData.channel_id">{{channel.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updatePerson()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 删除主题确认弹窗 -->
+    <div class="modal fade bs-example-modal-lg delete-topic" id="delete-person" role="dialog" aria-hidden="false">
+        <div class="modal-dialog" style="margin-top: 200px;">
+            <div class="modal-content">
+                <div class="panel panel-default" style="margin-bottom: 0px;border: none;">
+                    <div class="panel-heading">确认删除</div>
+                    <div class="row wrapper">
+                        <div class="form-group">
+                            <div>确认删除专员【{{person.name}}】，推荐码【{{person.install_code}}】？</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"style="border: none;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary"  data-dismiss="modal" ng-click="deletePerson()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+{
+    "interface": {
+        "services": {
+        },
+        "sdk": {
+        },
+        "url": {
+        },
+        "fragment": {
+        }
+    },
+    "services": [
+        {
+            "name": "getAllChannel",
+            "path": "/install/getAllChannel",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getAllChannel",
+            "comment": "获取渠道列表"
+        },{
+            "name": "getCountChannel",
+            "path": "/install/getCountChannel",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getCountChannel",
+            "comment": "获取渠道总数"
+        },{
+            "name": "addChannel",
+            "path": "/install/addChannel",
+            "method": "post",
+            "auth": false,
+            "impl": "installService.addChannel",
+            "comment": "增加渠道"
+        },{
+            "name": "deleteChannel",
+            "path": "/install/deleteChannel",
+            "method": "post",
+            "auth": false,
+            "impl": "installService.deleteChannel",
+            "comment": "删除渠道"
+        },{
+            "name": "getPersonByChannelId",
+            "path": "/install/getPersonByChannelId",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getPersonByChannelId",
+            "comment": "根据渠道id查询专员"
+        },{
+            "name": "getCountChannel",
+            "path": "/install/getCountPersonByChannelId",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getCountPersonByChannelId",
+            "comment": "根据渠道id统计专员数量"
+        },{
+            "name": "deletePerson",
+            "path": "/install/deletePerson",
+            "method": "post",
+            "auth": false,
+            "impl": "installService.deletePerson",
+            "comment": "删除专员"
+        },{
+            "name": "addPerson",
+            "path": "/install/addPerson",
+            "method": "post",
+            "auth": false,
+            "impl": "installService.addPerson",
+            "comment": "新增专员"
+        },{
+            "name": "updatePerson",
+            "path": "/install/updatePerson",
+            "method": "post",
+            "auth": false,
+            "impl": "installService.updatePerson",
+            "comment": "更新专员"
+        }
+    ],
+    "statics": [
+        {
+            "name": "install",
+            "path": "/install",
+            "comment": "渠道管理"
+        }
+    ],
+    "dataModelSchema": [
+
+    ],
+    "configuration": {
+    },
+    "errorHandler": [
+    ]
+}
