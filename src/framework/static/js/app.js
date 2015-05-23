@@ -87,6 +87,62 @@ var app = angular.module('app', [
                                 );
                             }]
                     }
+                }).state('app.sales_channel', {
+                    url: '/sales_channel',
+                    templateUrl: '/install/sales_channel.html',
+                    resolve: {
+                        deps: ['uiLoad','$ocLazyLoad',
+                            function (uiLoad,$ocLazyLoad) {
+                                return $ocLazyLoad.load('ngGrid').then(
+                                    function(){
+                                        return uiLoad.load(['/install/sales_channel.js',
+                                            'js/jquery/fileupload/tmpl.min.js',
+                                            'js/jquery/fileupload/jquery.ui.widget.js',
+                                            'js/jquery/fileupload/load-image.all.min.js',
+                                            'js/jquery/fileupload/canvas-to-blob.min.js',
+                                            'js/jquery/fileupload/jquery.iframe-transport.js',
+                                            'js/jquery/fileupload/jquery.fileupload.js',
+                                            'js/jquery/fileupload/jquery.fileupload-process.js',
+                                            'js/jquery/fileupload/jquery.fileupload-image.js',
+                                            'js/jquery/fileupload/jquery.fileupload-audio.js',
+                                            'js/jquery/fileupload/jquery.fileupload-video.js',
+                                            'js/jquery/fileupload/jquery.fileupload-validate.js',
+                                            'js/jquery/fileupload/jquery.fileupload-ui.js',
+                                            'js/jquery/fileupload/jquery.fileupload.css',
+                                            'js/jquery/fileupload/jquery.fileupload-ui.css'
+                                        ]);
+                                    }
+                                );
+                            }]
+                    }
+                }).state('app.sales_person', {
+                    url: '/sales_person',
+                    templateUrl: '/install/sales_person.html',
+                    resolve: {
+                        deps: ['uiLoad','$ocLazyLoad',
+                            function (uiLoad,$ocLazyLoad) {
+                                return $ocLazyLoad.load('ngGrid').then(
+                                    function(){
+                                        return uiLoad.load(['/install/sales_person.js',
+                                            'js/jquery/fileupload/tmpl.min.js',
+                                            'js/jquery/fileupload/jquery.ui.widget.js',
+                                            'js/jquery/fileupload/load-image.all.min.js',
+                                            'js/jquery/fileupload/canvas-to-blob.min.js',
+                                            'js/jquery/fileupload/jquery.iframe-transport.js',
+                                            'js/jquery/fileupload/jquery.fileupload.js',
+                                            'js/jquery/fileupload/jquery.fileupload-process.js',
+                                            'js/jquery/fileupload/jquery.fileupload-image.js',
+                                            'js/jquery/fileupload/jquery.fileupload-audio.js',
+                                            'js/jquery/fileupload/jquery.fileupload-video.js',
+                                            'js/jquery/fileupload/jquery.fileupload-validate.js',
+                                            'js/jquery/fileupload/jquery.fileupload-ui.js',
+                                            'js/jquery/fileupload/jquery.fileupload.css',
+                                            'js/jquery/fileupload/jquery.fileupload-ui.css'
+                                        ]);
+                                    }
+                                );
+                            }]
+                    }
                 });
         }
     ]

@@ -80,6 +80,27 @@
             "auth": false,
             "impl": "qrcode.updateEntity",
             "comment": "更新二维码"
+        },{
+            "name": "delTag",
+            "path": "/activity/delTag/:id",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.delTag",
+            "comment": "删除标签"
+        },{
+            "name": "updateTag",
+            "path": "/activity/updateTag/:id",
+            "method": "post",
+            "auth": false,
+            "impl": "qrcode.updateTag",
+            "comment": "更新标签"
+        },{
+            "name": "queryEntityHasTags",
+            "path": "/activity/queryEntityHasTags",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.queryEntityHasTags",
+            "comment": "查询实体拥有的标签"
         }
     ],
     "statics": [

@@ -11,7 +11,10 @@
 
           <div class="panel-heading b-b b-light">二维码管理</div>
           <div class="panel-body">
-               <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-activity">添加活动</button>
+               <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-activity">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    添加活动
+               </button>
           </div>
      </div>
 
@@ -20,27 +23,43 @@
                <div class="panel-heading" role="tab" id="heading{{$index+1}}">
                     <h4 class="panel-title">
                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index+1}}" aria-expanded="false" aria-controls="collapse{{$index+1}}">
+                              <span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>
                               {{activity.name}}
                          </a>
                     </h4>
                </div>
                <div id="collapse{{$index+1}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{$index+1}}">
                     <div class="panel-body">
-                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-qrcode" ng-click="sendId(activity)">添加二维码</button>
-                         <button type="button" class="btn btn-info" data-toggle="modal" data-target=".update-activity" ng-click="sendId(activity)">编辑本活动</button>
-                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".del-activity" ng-click="sendId(activity)">删除本活动</button>
+                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-qrcode" ng-click="sendId(activity)">
+                              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                              添加二维码
+                         </button>
+                         <button type="button" class="btn btn-info" data-toggle="modal" data-target=".update-activity" ng-click="sendId(activity)">
+                              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                              编辑本活动
+                         </button>
+                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".del-activity" ng-click="sendId(activity)">
+                              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                              删除本活动
+                         </button>
                     </div>
                     <div class="panel-body">
                          <div class="col-md-2" ng-repeat="entity in viewData.entities | filter:{activity_id: activity.id}">
                               <div class="thumbnail">
                                    <a>
-                                        <img src="{{entity.qrcode_url}}" >
+                                        <img src="{{entity.qrcode_url}}" width="209px" >
                                    </a>
                                    <div class="caption">
                                         <h4>{{entity.name}}</h4>
                                         <p>被扫次数：0</p>
-                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target=".update-entity" ng-click="translate(entity)">编辑</button>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".del-entity" ng-click="translate(entity)">删除</button>
+                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target=".update-entity" ng-click="translate(entity)">
+                                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                             编辑
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".del-entity" ng-click="translate(entity)">
+                                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                             删除
+                                        </button>
                                    </div>
                               </div>
                          </div>
@@ -69,8 +88,14 @@
                          </fieldset>
                     </div>
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                         <button type="button" class="btn btn-primary" ng-click="addActivity()">确认</button>
+                         <button type="button" class="btn btn-default" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                              取消
+                         </button>
+                         <button type="button" class="btn btn-primary" ng-click="addActivity()">
+                              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                              确认
+                         </button>
                     </div>
                </div>
           </div>
@@ -123,8 +148,13 @@
                          </fieldset>
                     </div>
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                         <button type="button" class="btn btn-primary" ng-click="addQrcode()">确认</button>
+                         <button type="button" class="btn btn-default" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                              取消</button>
+                         <button type="button" class="btn btn-primary" ng-click="addQrcode()">
+                              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                              确认
+                         </button>
                     </div>
                </div>
           </div>
@@ -145,8 +175,14 @@
                          </fieldset>
                     </div>
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                         <button type="button" class="btn btn-primary" ng-click="delActivity()">确认</button>
+                         <button type="button" class="btn btn-default" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                              取消
+                         </button>
+                         <button type="button" class="btn btn-primary" ng-click="delActivity()">
+                              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                              确认
+                         </button>
                     </div>
                </div>
           </div>
@@ -170,8 +206,14 @@
                          </fieldset>
                     </div>
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                         <button type="button" class="btn btn-primary" ng-click="updateActivity()">确认</button>
+                         <button type="button" class="btn btn-default" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                              取消
+                         </button>
+                         <button type="button" class="btn btn-primary" ng-click="updateActivity()">
+                              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                              确认
+                         </button>
                     </div>
                </div>
           </div>
@@ -192,8 +234,14 @@
                          </fieldset>
                     </div>
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                         <button type="button" class="btn btn-primary" ng-click="delEntity()">确认</button>
+                         <button type="button" class="btn btn-default" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                              取消
+                         </button>
+                         <button type="button" class="btn btn-primary" ng-click="delEntity()">
+                              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                              确认
+                         </button>
                     </div>
                </div>
           </div>
@@ -209,16 +257,32 @@
                     <div class="modal-body center-block">
                          <fieldset>
                               <div class="form-group col-md-12 col-md-offset-1">
-                                   <h4 class="col-md-2" style="float:left;line-height: 15px;">二维码名称:</h4>
+                                   <h4 class="col-md-3 text-right" style="float:left;line-height: 15px;">二维码名称:</h4>
                                    <div class="form-group col-md-7">
                                         <input type="text" class="form-control" ng-model="entityData.name" />
                                    </div>
                               </div>
                          </fieldset>
+                         <fieldset>
+                              <div class="col-md-12 col-md-offset-1">
+                                   <h4 class="col-md-3" style="float:left;text-align:right;">标签:</h4>
+                                   <div class="form-group col-md-7">
+                                        <label class="checkbox-inline i-checks" style="margin-top:8px;" ng-repeat="tag in viewData.tags">
+                                             <input type="checkbox" name="tag_ids" value="{{tag.id}}" ng-click="toggleTagSelection2(tag.id)" ng-checked="entityData.entity_has_tagIds.indexOf(tag.id) > -1"><i></i>{{tag.name}}
+                                        </label>
+                                   </div>
+                              </div>
+                         </fieldset>
                     </div>
                     <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                         <button type="button" class="btn btn-primary" ng-click="updateEntity()">确认</button>
+                         <button type="button" class="btn btn-default" data-dismiss="modal">
+                              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                              取消
+                         </button>
+                         <button type="button" class="btn btn-primary" ng-click="updateEntity()">
+                              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                              确认
+                         </button>
                     </div>
                </div>
           </div>

@@ -6,6 +6,11 @@
         "menu_title":"素材管理",
         "menu_video":"视频管理"
     },
+    "install":{
+        "sales_title":"渠道管理",
+            "sales_channel":"渠道管理",
+            "sales_person":"专员管理"
+    },
     "qrcode":{
         "title":"活动管理",
         "menu_qrcode":"二维码管理",

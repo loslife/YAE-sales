@@ -17,6 +17,9 @@ exports.delActivity = delActivity;
 exports.updateActivity = updateActivity;
 exports.updateEntity = updateEntity;
 exports.delEntity = delEntity;
+exports.updateTag = updateTag;
+exports.delTag = delTag;
+exports.queryEntityHasTags = queryEntityHasTags;
 
 function queryActivity(req, res, next){
     var sql = "select * from activities";
@@ -94,7 +97,7 @@ function addEntities(req, res, next){
     var tag_sql = "insert into entities_has_tags (id,entity_id,tag_id) values (:id,:entity_id,:tag_id)";
     switch (req.body.qrcodeType){
         case "meiguanjia":
-            var url = "http://127.0.0.1:5002/svc/wsite/meiyeguanjia/createQrcode";
+            var url = "http://wx.yilos.com/svc/wsite/meiyeguanjia/createQrcode";
             var options = {
                 method: "POST",
                 uri: url,
@@ -126,16 +129,32 @@ function addEntities(req, res, next){
             break;
         default :
             var qrcode_url = req.body.qrcodeUrl;
-            var qr_svg = qr.image(qrcode_url, {type: 'png'});
-            qr_svg.pipe(fs.createWriteStream(path.join(__dirname,'qrcode.png')));
-            ossClient.putImageObjectToOss("qrcode/"+id, path.join(__dirname,"qrcode.png"), function(error){
-                if(error){
-                    return next(error);
-                }
-                console.log(id);
-                doResponse(req, res, "ok");
-            });
+            var qr_png = qr.image(qrcode_url, {type: 'png', margin: 2});
+            qr_png.pipe(fs.createWriteStream(path.join(__dirname,'qrcode.png')));
+            qr_png.on("end", function(){
+                ossClient.putImageObjectToOss("qrcode/"+id, path.join(__dirname,"qrcode.png"), function(error){
+                    if(error){
+                        return next(error);
+                    }
+                    var qrUrl = "http://client-images.oss-cn-hangzhou.aliyuncs.com/qrcode/" + id;
 
+                    dbHelper.execSql(sql, {id:id, activity_id:activity_id, name:name, qrcode_url: qrUrl}, function(err, data){
+                        if(err){
+                            return next(err);
+                        }
+                        for(var i=0;i<tags.length;i++){
+                            var id_for_tag = uuid.v1();
+                            dbHelper.execSql(tag_sql, {id:id_for_tag, entity_id:id, tag_id:tags[i]}, function(e, result){
+                                if(e){
+                                    console.log(e);
+                                    return;
+                                }
+                            });
+                        }
+                        doResponse(req, res, {id:id, activity_id:activity_id, name:name, qrcode_url:qrUrl});
+                    });
+                });
+            });
     }
 
 }
@@ -145,6 +164,29 @@ function addTag(req, res, next){
     var id = uuid.v1();
     var sql = "insert into tags (id,name) values (:id,:name)";
     dbHelper.execSql(sql, {id:id, name:tag_name}, function(error, data){
+        if(error){
+            return next(error);
+        }
+        doResponse(req, res, {id:id,name:tag_name});
+    });
+}
+
+function updateTag(req, res, next){
+    var id = req.params["id"];
+    var name = req.body.name;
+    var sql = "update tags set name=:name where id=:id";
+    dbHelper.execSql(sql, {id:id,name:name},function(error, data){
+        if(error){
+            return next(error);
+        }
+        doResponse(req, res, "ok");
+    });
+}
+
+function delTag(req, res, next){
+    var id = req.params["id"];
+    var sql = "delete from tags where id=:id ";
+    dbHelper.execSql(sql, {id:id}, function(error, data){
         if(error){
             return next(error);
         }
@@ -174,8 +216,8 @@ function queryAllEntities(req, res, next){
 
 function delEntity(req, res, next){
     var id = req.params["id"];
-    var sql = "delete a,b from entities_has_tags a,channel_entities b where a.entity_id=:e_id and b.id=:id ";
-    dbHelper.execSql(sql, {e_id:id, id:id}, function(error, data){
+    var sql = "delete from channel_entities where id=:id ";
+    dbHelper.execSql(sql, {id:id}, function(error, data){
         if(error){
             return next(error);
         }
@@ -187,11 +229,37 @@ function delEntity(req, res, next){
 function updateEntity(req, res, next){
     var id = req.params["id"];
     var name = req.body.name;
-    var sql = "update channel_entities set name=:name where id=:id";
-    dbHelper.execSql(sql, {id:id,name:name},function(error, data){
+    var tags = req.body.tags;
+    var sqlArray = [];
+    sqlArray.push({
+        statement: "update channel_entities set name=:name where id=:id",
+        value: {id:id,name:name}
+    });
+    sqlArray.push({
+        statement: "delete from entities_has_tags where entity_id=:id",
+        value: {id:id}
+    });
+    for(var i=0;i<tags.length;i++){
+        var uuids = uuid.v1();
+        sqlArray.push({
+            statement: "insert into entities_has_tags (id,entity_id,tag_id) values (:id,:entity_id,:tag_id)",
+            value: {id:uuids, entity_id:id, tag_id:tags[i]}
+        });
+    }
+    dbHelper.bacthSeriesExecSql(sqlArray, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, "ok");
+    });
+}
+
+function queryEntityHasTags(req, res, next){
+    var sql = "select * from entities_has_tags";
+    dbHelper.execSql(sql, {}, function(error, data){
         if(error){
             return next(error);
         }
-        doResponse(req, res, "ok");
+        doResponse(req, res, data)
     });
 }
