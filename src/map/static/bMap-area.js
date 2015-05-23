@@ -1,23 +1,97 @@
-//var dbHelper = require(FRAMEWORKPATH + "/utils/dbHelper");
-
-//exports.testGet = testGet();
-
 // 百度地图API功能
 var map = new BMap.Map("map");
-map.centerAndZoom("深圳", 13);
-map.enableScrollWheelZoom(true);
-map.enableDragging();
 
 var index = 0;
+var saveCount = 0;
+var getCount = 0;
 var showPoints = [];
-var showsPointMessage = [];
-var makeSureArea = [];
+var savePointsArea = [];
+var getAreaPoints = [];
+var areaNickName = [];
 var myGeo = new BMap.Geocoder();
 var startDraw;
 var stopDraw;
 var clearDraw;
 var backDraw;
 var makeSure;
+
+//获取地址解析成百度地图上的点，再显示出来
+var nailStoreAddress = [];
+var nailStoreName = [];
+var storeMessage = [];
+var mapData;
+var mapArea;
+
+function init(){
+    mapData = JSON.parse(replaceSpecialChar(pageData));
+
+    //创建控件
+    var drawCtr = new drawController();
+    map.addControl(drawCtr);
+
+    storeMessage = mapData.store
+    mapArea = mapData.area || "南京";
+
+    if(storeMessage){
+        for(var i = 0; i < storeMessage.length; i++){
+            nailStoreAddress.push(storeMessage[i].address);
+            nailStoreName.push(storeMessage[i].name);
+        }
+    }
+
+    if(mapData.regionPoints){
+        getCount = mapData.regionPoints.length;
+        var showCircle = "";
+        for(var i = 0; i < getCount; i++){
+            var str = (i + 1) +"." +mapArea + "区" + (i + 1) + "号战地<br/><br/>";
+            showCircle += str;
+        }
+
+        document.getElementById("allList").innerHTML = showCircle;
+        show(mapData.regionPoints);
+    }
+
+    var mapLevel = mapData.level || 13;
+
+    map.centerAndZoom(mapArea, mapLevel);
+    map.enableScrollWheelZoom(true);
+    map.enableDragging();
+
+    showNailStore();
+}
+
+function replaceSpecialChar(string) {
+    return string.replace(/\n/g, "\\n").replace(/\n\r/g, "\\n\\r");
+}
+
+function showNailStore(){
+    var addPoint = nailStoreAddress[index];
+    var storeName = nailStoreName[index];
+    geocodeSearch(addPoint, storeName);
+    index++;
+}
+
+function geocodeSearch(addPoint, storeName){
+    if(index < nailStoreAddress.length){
+        setTimeout(window.showNailStore,50);
+    }
+
+    myGeo.getPoint(addPoint, function(point){
+        if (point) {
+            var address = new BMap.Point(point.lng, point.lat);
+            addMarker(address, storeName, addPoint);
+        }
+    }, mapData.area);
+}
+
+// 编写自定义函数,创建标注
+function addMarker(point, name, add){
+    var marker = new BMap.Marker(point);
+    marker.addEventListener("click", function(e){
+        openInfo(add, name, e);
+    });
+    map.addOverlay(marker);
+}
 
 //自定义控件
 function drawController() {
@@ -44,15 +118,15 @@ drawController.prototype.initialize = function(map) {
     makeSure.appendChild(document.createTextNode("确定"));
 
     div.style.height = "30px";
-    div.style.width = "404px";
+    div.style.width = "414px";
     div.style.cursor = "pointer";
-    div.style.border = "1px solid #83B447";
+    div.style.border = "2px solid #83B447";
     div.style.backgroundColor = "#83B447";
     div.style.borderRadius = "4px";
 
     startDraw.style.backgroundColor = "#FFF9DD";
     startDraw.style.height = "30px";
-    startDraw.style.width = "80px";
+    startDraw.style.width = "81px";
     startDraw.style.borderBottomLeftRadius = "3px";
     startDraw.style.borderTopLeftRadius = "3px";
     startDraw.style.marginLeft = "0px";
@@ -64,8 +138,8 @@ drawController.prototype.initialize = function(map) {
 
     stopDraw.style.backgroundColor = "#FFF9DD";
     stopDraw.style.height = "30px";
-    stopDraw.style.width = "80px";
-    stopDraw.style.marginLeft = "81px";
+    stopDraw.style.width = "81px";
+    stopDraw.style.marginLeft = "83px";
     stopDraw.style.marginTop = "-30px";
     stopDraw.style.marginBottom = "-30px";
     stopDraw.style.color = "#5B4B3A";
@@ -74,8 +148,8 @@ drawController.prototype.initialize = function(map) {
 
     clearDraw.style.backgroundColor = "#FFF9DD";
     clearDraw.style.height = "30px";
-    clearDraw.style.width = "80px";
-    clearDraw.style.marginLeft = "162px";
+    clearDraw.style.width = "81px";
+    clearDraw.style.marginLeft = "166px";
     clearDraw.style.marginTop = "-30px";
     clearDraw.style.marginBottom = "-30px";
     clearDraw.style.color = "#5B4B3A";
@@ -84,8 +158,8 @@ drawController.prototype.initialize = function(map) {
 
     backDraw.style.backgroundColor = "#FFF9DD";
     backDraw.style.height = "30px";
-    backDraw.style.width = "80px";
-    backDraw.style.marginLeft = "243px";
+    backDraw.style.width = "81px";
+    backDraw.style.marginLeft = "249px";
     backDraw.style.marginTop = "-30px";
     backDraw.style.marginBottom = "-30px";
     backDraw.style.color = "#5B4B3A";
@@ -94,10 +168,10 @@ drawController.prototype.initialize = function(map) {
 
     makeSure.style.backgroundColor = "#FFF9DD";
     makeSure.style.height = "30px";
-    makeSure.style.width = "80px";
+    makeSure.style.width = "82px";
     makeSure.style.borderBottomRightRadius = "3px";
     makeSure.style.borderTopRightRadius = "3px";
-    makeSure.style.marginLeft = "324px";
+    makeSure.style.marginLeft = "332px";
     makeSure.style.marginTop = "-30px";
     makeSure.style.marginBottom = "-30px";
     makeSure.style.color = "#5B4B3A";
@@ -208,67 +282,35 @@ function makeSureStyle() {
 
 function makeSureDraw() {
     closeDraw();
-    var sql = "select * from tuiguang.pins where id = :id;";
-    //dbHelper.execSql(sql, {id: 1}, function(err, results){
-    //    if(err){
-    //        return ;
-    //    }
-    //
-    //    var result = [];
-    //    result.push(results);
-    //});
-}
+    var exitPoints = saveCount;
+    saveCount = overlays.length;
 
-//创建控件
-var drawCtr = new drawController();
-map.addControl(drawCtr);
-
-//获取地址解析成百度地图上的点，再显示出来
-var nailStoreAddress = [
-    "深圳大学",
-    "宝安区流塘新村流塘小学",
-    "深圳宝体中心",
-    "地王大厦",
-    "海岸城",
-    "宝安机场",
-    "布吉",
-    "南头",
-    "中山公园",
-    "深圳西站",
-    "莲花山",
-    "西丽",
-    "南油",
-    "欢乐谷",
-    "世界之窗",
-    "锦绣中华"
-];
-
-function showNailStore(){
-    var addPoint = nailStoreAddress[index];
-    geocodeSearch(addPoint);
-    index++;
-}
-function geocodeSearch(addPoint){
-    if(index < nailStoreAddress.length){
-        setTimeout(window.showNailStore,50);
+    var areaPoints = [];
+    var showCircle = "";
+    var name = [];
+    for(var i = 0; i < saveCount + getCount; i++){
+        var str = (i + 1) +"." +mapArea + "区" + (i + 1) + "号战地<br/><br/>";
+        showCircle += str;
     }
 
-    myGeo.getPoint(addPoint, function(point){
-        if (point) {
-            var address = new BMap.Point(point.lng, point.lat);
-            showsPointMessage.push([point.lng, point.lat, addPoint]);
-            addMarker(address, addPoint);
-        }
-    }, "深圳市");
-}
+    document.getElementById("allList").innerHTML = showCircle;
 
-// 编写自定义函数,创建标注
-function addMarker(point,add){
-    var marker = new BMap.Marker(point);
-    marker.addEventListener("click", function(e){
-        openInfo(add, e);
-    });
-    map.addOverlay(marker);
+    if(exitPoints === saveCount){
+        return ;
+    }
+
+    for(var i = exitPoints; i < saveCount; i++){
+        areaPoints.push(overlays[i].W);
+        name.push(i + getCount);
+    }
+
+    $.post('/sales/map/postPins',
+        {
+            areaPoints: areaPoints,
+            nickName: name
+        },function(data,status){
+            console.log(data);
+        });
 }
 
 //信息显示的窗口大小
@@ -283,7 +325,8 @@ var opts = {
 };
 
 //信息显示窗口
-function openInfo(content,e){
+function openInfo(content, name, e){
+    opts.title = name;
     var p = e.target;
     var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
     var infoMarker = new BMap.Marker(point);
@@ -293,10 +336,9 @@ function openInfo(content,e){
 
 //绘画完成后调用
 var overlays = [];
+
 var overlaycomplete = function(e){
     overlays.push(e.overlay);
-    showPoints.push(e.overlay.W);
-
     stopDrawStyle();
 };
 var styleOptions = {
@@ -336,17 +378,17 @@ function closeDraw() {
 
 //清除所有
 function clearAll() {
-    for(var i = 0; i < overlays.length; i++){
+    for(var i = saveCount; i < overlays.length; i++){
         map.removeOverlay(overlays[i]);
     }
 
-    overlays.length = 0
+    overlays.length = saveCount
     closeDraw();
 }
 
 //退回上一步
 function backStep() {
-    if(overlays.length <= 0) {
+    if(overlays.length <= 0 || overlays.length == saveCount) {
         closeDraw();
         return ;
     }
@@ -356,7 +398,7 @@ function backStep() {
 }
 
 //显示线
-function show() {
+function show(showPoints) {
     if(!showPoints || showPoints.length <= 0){
         return ;
     }
@@ -375,9 +417,6 @@ function show() {
     }
 }
 
-window.onload = showNailStore;
+window.onload = init;
 
-function testGet(){
-    alert("你好！");
-}
 

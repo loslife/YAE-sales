@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html, #map{
+            width: 100%;
+            height: 100%;
+            margin:0;
+            font-family:"微软雅黑";
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=C739fdeec7706c19753d59798c3ae297"></script>
+    <title>战略地图</title>
+</head>
+<body>
+<div id="map"></div>
+</body>
+
+<script type="text/javascript">
+    var pageData = '<%- JSON.stringify({region: region}) %>';
+</script>
+<script src="/map/regionMap.js"></script>
+
+</html>
