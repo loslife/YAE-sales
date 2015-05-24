@@ -339,6 +339,11 @@ function openInfo(content, name, e){
 var overlays = [];
 
 var overlaycomplete = function(e){
+    if(e.overlay.W.length <= 1){
+        closeDraw();
+        stopDrawStyle();
+        return ;
+    }
     overlays.push(e.overlay);
     stopDrawStyle();
     setAreaName();
