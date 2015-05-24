@@ -102,9 +102,9 @@ drawController.prototype = new BMap.Control();
 drawController.prototype.initialize = function(map) {
     var div = document.createElement("div");
     startDraw = document.createElement("div");
-    startDraw.appendChild(document.createTextNode("划分"));
+    startDraw.appendChild(document.createTextNode("编辑"));
     stopDraw = document.createElement("div");
-    stopDraw.appendChild(document.createTextNode("结束"));
+    stopDraw.appendChild(document.createTextNode("完成"));
     clearDraw = document.createElement("div");
     clearDraw.appendChild(document.createTextNode("清除"));
     backDraw = document.createElement("div");
@@ -334,6 +334,7 @@ var overlaycomplete = function(e){
     overlays.push(e.overlay);
     stopDrawStyle();
     setAreaName();
+    showArea();
 };
 
 //输入圈名
@@ -389,6 +390,7 @@ function clearAll() {
 
     overlays.length = saveCount
     closeDraw();
+    showArea();
 }
 
 //退回上一步
@@ -401,6 +403,7 @@ function backStep() {
     map.removeOverlay(overlays[overlays.length - 1]);
     regionName.pop();
     overlays.length--;
+    showArea();
 }
 
 //显示线
@@ -426,7 +429,7 @@ function show(showPoints) {
 //显示划分区域
 function showArea(){
     var showCircle = "";
-    for(var i = 0; i < saveCount + getCount; i++){
+    for(var i = 0; i < overlays.length + getCount; i++){
         var str = (i + 1) +"." +mapArea + "区域" + regionName[i] + "战地<br/><br/>";
         showCircle += str;
     }
