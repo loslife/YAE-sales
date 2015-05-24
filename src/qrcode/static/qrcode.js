@@ -14,7 +14,8 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
             activities: [],
             tags: [],
             entities: [],
-            tag_entity:[]
+            tag_entity:[],
+            scan_record:[]
         };
     }
 
@@ -78,7 +79,6 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
             }
         });
     }
-
     $scope.addActivity = function(){
         var activityName = $scope.activity.name;
         var url = decodeURI("/sales/activity/addActivity/" + activityName);

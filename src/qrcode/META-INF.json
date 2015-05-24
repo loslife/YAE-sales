@@ -107,7 +107,7 @@
             "method": "post",
             "auth": false,
             "impl": "qrcode.wxScan",
-            "comment": "微信扫描"
+            "comment": "微信公众号被扫描"
         },{
             "name": "queryScanCount",
             "path": "/activity/queryScanCount",
@@ -115,6 +115,13 @@
             "auth": false,
             "impl": "qrcode.queryScanCount",
             "comment": "扫描统计"
+        },{
+            "name": "redirect",
+            "path": "/activity/redirect",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.redirect",
+            "comment": "普通URL二维码被扫描"
         }
 
     ],
