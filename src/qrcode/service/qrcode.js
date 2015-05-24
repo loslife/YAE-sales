@@ -21,9 +21,11 @@ exports.updateTag = updateTag;
 exports.delTag = delTag;
 exports.queryEntityHasTags = queryEntityHasTags;
 exports.queryScanCount = queryScanCount;
+exports.redirect = redirect;
+
 
 function queryScanCount(req, res, next){
-    var sql = "select * from scan_records";
+    var sql = "select entity_id,count(id) as count from scan_records group by entity_id";
     dbHelper.execSql(sql, {}, function(error, data){
         if(error){
             return next(error);
@@ -99,6 +101,22 @@ function wxScan(req, res, next){
     });
 }
 
+function redirect(req, res, next){
+    var entity_id = req.query.entity_id;
+    var redirectUrl = req.query.redirectUrl;
+    var scan_date = Date.parse(new Date());
+    var id = uuid.v1();
+    var sql = "insert into scan_records (id,entity_id,scan_date) values (:id,:entity_id,:scan_date)";
+    dbHelper.execSql(sql ,{id:id, entity_id:entity_id, scan_date:scan_date}, function(err, data){
+        if(err){
+            return next(err);
+        }
+        res.redirect(redirectUrl);
+    });
+
+
+}
+
 function addEntities(req, res, next){
     var id = uuid.v1();
     var activity_id = req.body.activity_id;
@@ -140,14 +158,15 @@ function addEntities(req, res, next){
             break;
         default :
             var qrcode_url = req.body.qrcodeUrl;
-            var qr_png = qr.image(qrcode_url, {type: 'png', margin: 2});
+            var redirect_url = "http://115.29.248.236:9393/sales/activity/redirect?entity_id=" + id + "&redirectUrl=" + qrcode_url;
+            var qr_png = qr.image(redirect_url, {type: 'png', margin: 2});
             qr_png.pipe(fs.createWriteStream(path.join(__dirname,'qrcode.png')));
             qr_png.on("end", function(){
-                ossClient.putImageObjectToOss("qrcode/"+id, path.join(__dirname,"qrcode.png"), function(error){
+                ossClient.putPictureObjectToOss(path.join(__dirname,"qrcode.png"), function(error,results){
                     if(error){
                         return next(error);
                     }
-                    var qrUrl = "http://client-images.oss-cn-hangzhou.aliyuncs.com/qrcode/" + id;
+                    var qrUrl = results.oss_url;
 
                     dbHelper.execSql(sql, {id:id, activity_id:activity_id, name:name, qrcode_url: qrUrl}, function(err, data){
                         if(err){
