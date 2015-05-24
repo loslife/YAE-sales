@@ -430,7 +430,7 @@ function show(showPoints) {
 function showArea(){
     var showCircle = "";
     for(var i = 0; i < overlays.length + getCount; i++){
-        var str = (i + 1) +"." +mapArea + "区域" + regionName[i] + "战地<br/><br/>";
+        var str = (i + 1) +"." +mapArea + "区" + regionName[i] + "战区<br/><br/>";
         showCircle += str;
     }
 
