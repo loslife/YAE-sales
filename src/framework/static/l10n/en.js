@@ -1,17 +1,15 @@
 {
   "header" : {
   },
-  "cms":{
+  "sales":{
     "video":{
         "menu_title":"素材管理",
         "menu_video":"视频管理"
     },
-    "channel":{
-        "title":"频道管理",
-        "menu_poster_setting":"轮播图",
-        "menu_xilie_setting":"首页推荐",
-        "menu_tags_setting":"标签设置",
-        "menu_topic":"发布主题"
+    "qrcode":{
+        "title":"活动管理",
+        "menu_qrcode":"二维码管理",
+        "menu_tags":"标签管理"
     },
     "activities":{
         "title":"求教程管理",

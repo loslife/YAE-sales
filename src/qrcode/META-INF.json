@@ -11,371 +11,82 @@
     },
     "services": [
         {
-            "name": "videoUpload",
-            "path": "/video/upload",
-            "method": "post",
-            "auth": false,
-            "impl": "videoService.uploadVideo",
-            "comment": "移动终端上传视频文件"
-        },{
-            "name": "pictureUpload",
-            "path": "/picture/upload",
-            "method": "post",
-            "auth": false,
-            "impl": "videoService.uploadPicture",
-            "comment": "移动终端上传图片文件"
-        },{
-            "name": "videoDelete",
-            "path": "/video/:id",
-            "method": "delete",
-            "auth": false,
-            "impl": "videoService.deleteVideo",
-            "comment": "删除视频"
-        },{
-            "name": "videoList",
-            "path": "/video/videoList",
+            "name": "addActivity",
+            "path": "/activity/addActivity/:activityName",
             "method": "get",
             "auth": false,
-            "impl": "videoService.listVideo",
-            "comment": "视频文件列表"
+            "impl": "qrcode.addActivity",
+            "comment": "添加活动"
         },{
-            "name": "listTopic",
-            "path": "/topic/listTopic",
+            "name": "queryActivity",
+            "path": "/activity/queryActivity",
             "method": "get",
             "auth": false,
-            "impl": "topicService.listTopic",
-            "comment": "主题列表"
+            "impl": "qrcode.queryActivity",
+            "comment": "查询所有活动"
         },{
-            "name": "addTopic",
-            "path": "/topic/addTopic",
-            "method": "post",
-            "auth": false,
-            "impl": "topicService.addTopic",
-            "comment": "新增主题"
-        },{
-            "name": "getTopic",
-            "path": "/topics/:topicId",
+            "name": "addTag",
+            "path": "/activity/addTag/:tagName",
             "method": "get",
             "auth": false,
-            "impl": "topicService.getTopic",
-            "comment": "获取主题内容"
+            "impl": "qrcode.addTag",
+            "comment": "添加标签"
         },{
-            "name": "updateTopic",
-            "path": "/updateTopic/:topicId",
-            "method": "post",
-            "auth": false,
-            "impl": "topicService.updateTopic",
-            "comment": "更新主题内容"
-        },{
-            "name": "queryTags",
-            "path": "/topic/queryTags",
+            "name": "queryAllTags",
+            "path": "/activity/queryAllTags",
             "method": "get",
             "auth": false,
-            "impl": "topicService.queryTags",
-            "comment": "获取所有的标签"
+            "impl": "qrcode.queryAllTags",
+            "comment": "查询所有标签"
         },{
-            "name": "addTopicTag",
-            "path": "/topic/addTopicTag",
+            "name": "addEntities",
+            "path": "/activity/addEntities",
             "method": "post",
             "auth": false,
-            "impl": "topicService.addTopicTag",
-            "comment": "新增标签"
+            "impl": "qrcode.addEntities",
+            "comment": "添加实体"
         },{
-            "name": "deleteTopicTag",
-            "path": "/topic/deleteTopicTag",
-            "method": "post",
-            "auth": false,
-            "impl": "topicService.deleteTopicTag",
-            "comment": "删除标签"
-        },{
-            "name": "getAuthorAccounts",
-            "path": "/topic/getAuthorAccounts",
+            "name": "queryAllEntities",
+            "path": "/activity/queryAllEntities",
             "method": "get",
             "auth": false,
-            "impl": "topicService.getAuthorAccounts",
-            "comment": "获取所有作者信息"
+            "impl": "qrcode.queryAllEntities",
+            "comment": "查询所有实体"
         },{
-            "name": "index",
-            "path": "/indexData",
+            "name": "delActivity",
+            "path": "/activity/delActivity/:id",
             "method": "get",
             "auth": false,
-            "impl": "indexSetting.index",
-            "comment": "获取首页数据"
-        },{
-            "name": "addPoster",
-            "path": "/index/addPoster",
-            "method": "post",
-            "auth": false,
-            "impl": "indexSetting.addPoster",
-            "comment": "新增轮播"
-        },{
-            "name": "deletePoster",
-            "path": "/index/deletePoster/:posterId",
-            "method": "delete",
-            "auth": false,
-            "impl": "indexSetting.deletePoster",
-            "comment": "删除轮播"
-        },{
-            "name": "addTopicCate",
-            "path": "/index/addTopicCate",
-            "method": "post",
-            "auth": false,
-            "impl": "indexSetting.addTopicCate",
-            "comment": "新增主题系列"
-        },{
-            "name": "updateTopicCate",
-            "path": "/index/updateTopicCate",
-            "method": "post",
-            "auth": false,
-            "impl": "indexSetting.updateTopicCate",
-            "comment": "修改主题系列"
-        },{
-            "name": "deleteTopicCate",
-            "path": "/index/deleteTopicCate/:id",
-            "method": "delete",
-            "auth": false,
-            "impl": "indexSetting.deleteTopicCate",
-            "comment": "删除主题系列"
-        },{
-            "name": "topic2Top",
-            "path": "/index/topic2Top/:category_id/:topic_id",
-            "method": "post",
-            "auth": false,
-            "impl": "indexSetting.topic2Top",
-            "comment": "系列主题置顶"
-        },{
-            "name": "cancelTopic2Top",
-            "path": "/index/cancelTopic2Top/:category_id/:topic_id",
-            "method": "post",
-            "auth": false,
-            "impl": "indexSetting.cancelTopic2Top",
-            "comment": "系列主题去除置顶"
-        },
-        {
-            "name": "deleteTopic",
-            "path": "/index/deleteTopic/:topic_id",
-            "method": "delete",
-            "auth": false,
-            "impl": "topicService.deleteTopic",
-            "comment": "删除主题"
-        },
-        {
-            "name": "createIndex",
-            "path": "/index/createIndex",
-            "method": "get",
-            "auth": false,
-            "impl": "indexSetting.createIndex",
-            "comment": "生成首页"
-        },{
-            "name": "saveHtml",
-            "path": "/index/saveHtml",
-            "method": "get",
-            "auth": false,
-            "impl": "indexSetting.saveHtml",
-            "comment": "保存首页"
-        },{
-            "name": "getHistoryActivities",
-            "path": "/qjc/getHistoryActivities",
-            "method": "get",
-            "auth": false,
-            "impl": "qjcService.getHistoryActivities",
-            "comment": "查询往期活动"
-        },{
-            "name": "addActivities",
-            "path": "/qjc/addActivities",
-            "method": "post",
-            "auth": false,
-            "impl": "qjcService.addActivities",
-            "comment": "新增活动"
-        },{
-            "name": "deleteActivities",
-            "path": "/qjc/deleteActivities",
-            "method": "post",
-            "auth": false,
-            "impl": "qjcService.deleteActivities",
+            "impl": "qrcode.delActivity",
             "comment": "删除活动"
         },{
-            "name": "getCandidatesCountByActivityId",
-            "path": "/qjc/getCandidatesCountByActivityId",
-            "method": "get",
-            "auth": false,
-            "impl": "qjcService.getCandidatesCountByActivityId",
-            "comment": "根据活动id查询求教程数目"
-        },{
-            "name": "getCandidatesByActivityId",
-            "path": "/qjc/getCandidatesByActivityId",
-            "method": "get",
-            "auth": false,
-            "impl": "qjcService.getCandidatesByActivityId",
-            "comment": "根据活动id分页查询求教程"
-        },
-        {
-            "name": "deleteCandidateById",
-            "path": "/qjc/deleteCandidateById/:id",
+            "name": "updateActivity",
+            "path": "/activity/updateActivity/:id",
             "method": "post",
             "auth": false,
-            "impl": "qjcService.deleteCandidateById",
-            "comment": "根据id删除求教程"
-        },
-        {
-            "name": "editActivities",
-            "path": "/qjc/updateActivities",
+            "impl": "qrcode.updateActivity",
+            "comment": "更新活动"
+        },{
+            "name": "delEntity",
+            "path": "/activity/delEntity/:id",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.delEntity",
+            "comment": "删除二维码"
+        },{
+            "name": "updateEntity",
+            "path": "/activity/updateEntity/:id",
             "method": "post",
             "auth": false,
-            "impl": "qjcService.updateActivities",
-            "comment": "编辑活动"
-        },
-        {
-            "name": "deleteReportCandidate",
-            "path": "/qjc/deleteReportCandidate/:id",
-            "method": "post",
-            "auth": false,
-            "impl": "qjcService.deleteReportCandidate",
-            "comment": "根据id取消被举报"
-        },
-        {
-            "name": "getActivityTime",
-            "path": "/qjc/getActivityTime",
-            "method": "get",
-            "auth": false,
-            "impl": "qjcService.getActivityTime",
-            "comment": "根据id查询活动所处阶段"
-        },
-        {
-            "name": "editCandidateById",
-            "path": "/qjc/editCandidateById",
-            "method": "post",
-            "auth": false,
-            "impl": "qjcService.editCandidateById",
-            "comment": "根据id修改投票数"
-        },
-        {
-            "name": "postCandidate",
-            "path": "/qjc/postCandidate/:activity_id",
-            "method": "post",
-            "auth": false,
-            "impl": "qjcService.postCandidate",
-            "comment": "增加求教程"
-        },{
-            "name": "queryAllTopics",
-            "path": "/qjc/queryAllTopics",
-            "method": "get",
-            "auth": false,
-            "impl": "qjcService.queryAllTopics",
-            "comment": "查询所有的主题"
-        },{
-            "name": "getMessage",
-            "path": "/msg/getMessage",
-            "method": "get",
-            "auth": false,
-            "impl": "messageService.getMessage",
-            "comment": "查询系统消息"
-        },{
-            "name": "getMessgeCount",
-            "path": "/msg/getMessgeCount",
-            "method": "get",
-            "auth": false,
-            "impl": "messageService.getMessgeCount",
-            "comment": "查询系统消息数量"
-        },{
-            "name": "deleteMessage",
-            "path": "/msg/deleteMessage/:id",
-            "method": "post",
-            "auth": false,
-            "impl": "messageService.deleteMessage",
-            "comment": "根据id删除消息"
-        },
-        {
-            "name": "addMessage",
-            "path": "/msg/addMessage",
-            "method": "post",
-            "auth": false,
-            "impl": "messageService.addMessage",
-            "comment": "增加系统消息"
-        },{
-            "name": "getFeedBackMsg",
-            "path": "/feedback/getFeedBackMsg",
-            "method": "get",
-            "auth": false,
-            "impl": "feed_back.feedBackMessage",
-            "comment": "获取所有的用户反馈"
-        },{
-            "name": "delFeedBackMsg",
-            "path": "/feedback/delFeedBackMsg",
-            "method": "get",
-            "auth": false,
-            "impl": "feed_back.delFeedBackMsg",
-            "comment": "删除用户反馈"
-        },{
-            "name": "getUserInfo",
-            "path": "/user/getUserInfo",
-            "method": "get",
-            "auth": false,
-            "impl": "userManage.getUserInfo",
-            "comment": "获取用户信息"
-        },{
-            "name": "delUser",
-            "path": "/user/delUser",
-            "method": "post",
-            "auth": false,
-            "impl": "userManage.delUser",
-            "comment": "删除用户"
-        },{
-            "name": "addUser",
-            "path": "/user/addUser",
-            "method": "post",
-            "auth": false,
-            "impl": "userManage.addUser",
-            "comment": "添加用户"
-        },{
-            "name": "getCommentByTopic",
-            "path": "/topic/getCommentByTopic/:topic_id",
-            "method": "get",
-            "auth": false,
-            "impl": "commentService.getCommentByTopic",
-            "comment": "获取评论"
-        },{
-            "name": "getCommentCountByTopic",
-            "path": "/topic/getCommentCountByTopic/:topic_id",
-            "method": "get",
-            "auth": false,
-            "impl": "commentService.getCommentCountByTopic",
-            "comment": "评论统计"
-        },{
-            "name": "deleteComments",
-            "path": "/topic/deleteComment/:commentId",
-            "method": "post",
-            "auth": false,
-            "impl": "commentService.deleteComment",
-            "comment": "删除评论"
-        },{
-            "name": "getReplyByCommentId",
-            "path": "/topic/getReplyByCommentId/:commentId",
-            "method": "get",
-            "auth": false,
-            "impl": "commentService.getReplyByCommentId",
-            "comment": "查询回复"
-        },{
-            "name": "getReplyCountByCommentId",
-            "path": "/topic/getReplyCountByCommentId/:commentId",
-            "method": "get",
-            "auth": false,
-            "impl": "commentService.getReplyCountByCommentId",
-            "comment": "回复统计"
-        },{
-            "name": "deleteReply",
-            "path": "/topic/deleteReply/:replyId",
-            "method": "post",
-            "auth": false,
-            "impl": "commentService.deleteReply",
-            "comment": "删除回复"
+            "impl": "qrcode.updateEntity",
+            "comment": "更新二维码"
         }
     ],
     "statics": [
         {
-            "name": "cms_video",
-            "path": "/cms_video",
-            "comment": "员工管理"
+            "name": "qrcode",
+            "path": "/qrcode",
+            "comment": "二维码制作"
         }
     ],
     "dataModelSchema": [
