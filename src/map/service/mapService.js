@@ -69,7 +69,7 @@ function showArea(req, res, next){
     }
 
     function getAreaRegions(callback){
-        var sql = "select * from regions where area_id = :area_id;";
+        var sql = "select * from regions where area_id = :area_id order by create_date asc;";
 
         dbHelper.execSql(sql, {area_id: data.id}, function(error, result){
             if(error){
@@ -168,7 +168,7 @@ function showRegion(req, res, next){
     }
 
     function getAreaRegions(callback){
-        var sql = "select * from regions where area_id = :area_id and name = :name;";
+        var sql = "select * from regions where area_id = :area_id and name = :name order by create_date asc;";
 
         dbHelper.execSql(sql, {area_id: regionData.id, name: region}, function(error, result){
             if(error){
@@ -182,7 +182,6 @@ function showRegion(req, res, next){
             callback(null);
         });
     }
-
 
     function getAreaRegionPoints(callback){
         var sql = "select * from region_points";
@@ -263,10 +262,13 @@ function postPins(req, res, next){
 
         function buildSql() {
             var uids = [];
+            var index = 0;
             _.each(name, function (regions) {
                 var uid = uuid.v1();
                 uids.push(uid);
-                allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions}, null, true));
+                var date = new Date().getTime();
+                allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index}, null, true));
+                index++;
             });
 
             for(var i = 0; i < uids.length; i++){
