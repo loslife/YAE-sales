@@ -13,6 +13,7 @@ var store = [];
 var area = "";
 var areaRegions = [];
 var areaRegionsPoints = [];
+var areaRegionName = [];
 
 function showArea(req, res, next){
 
@@ -21,7 +22,7 @@ function showArea(req, res, next){
     async.series([getArea, getStores, getAreaRegions, getAreaRegionPoints], function(err){
         if(err === "empty"){
             area = "nanjing";
-            res.render("area", {layout: false, area: "南京", level: 13,store: [], regionPoints: []});
+            res.render("area", {layout: false, area: "南京", level: 13,store: [], regionPoints: [], regionName: []});
             return ;
         }
 
@@ -29,8 +30,9 @@ function showArea(req, res, next){
             return;
         }
 
-        res.render("area", {layout: false, area: data.center, level: data.level,store: store, regionPoints: areaRegionsPoints});
+        res.render("area", {layout: false, area: data.center, level: data.level,store: store, regionPoints: areaRegionsPoints, regionName: areaRegionName});
         areaRegionsPoints = [];
+        areaRegionName = [];
     });
 
     function getArea(callback){
@@ -77,6 +79,7 @@ function showArea(req, res, next){
 
             _.each(result, function(item){
                 areaRegions.push(item.id);
+                areaRegionName.push(item.name);
             });
             callback(null);
         });
