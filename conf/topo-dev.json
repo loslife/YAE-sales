@@ -11,8 +11,8 @@
             "workerno": 1,
             "applications": [
                 "framework",
-                "map",
-                "qrcode"
+                "qrcode",
+                "install"
             ]
         }
     ],

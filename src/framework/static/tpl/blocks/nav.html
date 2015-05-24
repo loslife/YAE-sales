@@ -14,11 +14,13 @@
         <ul class="nav nav-sub dk">
             <li ui-sref-active="active">
                 <a ui-sref="app.qrcode">
+                    <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
                     <span translate="sales.qrcode.menu_qrcode"></span>
                 </a>
             </li>
             <li ui-sref-active="active">
                 <a ui-sref="app.tags">
+                    <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
                     <span translate="sales.qrcode.menu_tags"></span>
                 </a>
             </li>
@@ -26,6 +28,31 @@
         </ul>
     </li>
 
+    <li>
+        <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+            <i class="glyphicon glyphicon-facetime-video icon text-primary-dker"></i>
+            <span class="font-bold" translate="sales.install.sales_title">渠道管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+
+            <li ui-sref-active="active">
+                <a ui-sref="app.sales_channel">
+                    <span translate="sales.install.sales_channel"></span>
+                </a>
+            </li>
+
+            <li ui-sref-active="active">
+                <a ui-sref="app.sales_person">
+                    <span translate="sales.install.sales_person"></span>
+                </a>
+            </li>
+
+        </ul>
+    </li>
 
 </ul>
 <!-- / list -->
