@@ -1,32 +1,48 @@
 app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
 
 
-    $scope.viewData = {
-        activities: [],
-        tags: [],
-        entities: [],
-        tag_entity:[],
-        scan_record:[]
-    };
 
-    $scope.activitiesData = {
-        activity_id:"",
-        tagIds: [],
-        qrcodeName:"",
-        qrcodeType:"",
-        qrcodeUrl:""
-    };
-    $scope.delActivitiesData = {
-        name:"",
-        id:""
-    };
+    (function initData(){
+        initViewData();
+        initActivitiesData();
+        initDelActivitiesData();
+        initEntityData();
+    })();
 
-    $scope.entityData = {
-        id:"",
-        name:"",
-        entity_has_tags:[],
-        entity_has_tagIds:[]
-    };
+    function initViewData(){
+        $scope.viewData = {
+            activities: [],
+            tags: [],
+            entities: [],
+            tag_entity:[]
+        };
+    }
+
+    function initActivitiesData() {
+        $scope.activitiesData = {
+            activity_id: "",
+            tagIds: [],
+            qrcodeName: "",
+            qrcodeType: "",
+            qrcodeUrl: ""
+        };
+    }
+
+    function initDelActivitiesData() {
+        $scope.delActivitiesData = {
+            name: "",
+            id: ""
+        };
+    }
+
+    function initEntityData() {
+        $scope.entityData = {
+            id: "",
+            name: "",
+            entity_has_tags: [],
+            entity_has_tagIds: []
+        };
+    }
 
     init();
 
@@ -70,6 +86,7 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
             if(data.code == 0){
                 $scope.viewData.activities.push(data.result);
                 $(".add-activity").modal('hide');
+                $scope.activity = null;
             }
         });
     };
@@ -90,6 +107,7 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
             if(data.code == 0){
                 init();
                 $(".del-activity").modal('hide');
+                initDelActivitiesData();
             }
         });
     };
@@ -103,6 +121,7 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
             if(data.code == 0){
                 init();
                 $(".update-activity").modal('hide');
+                initDelActivitiesData();
             }
         });
     };
@@ -123,8 +142,10 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
 
         $http.post(url, $scope.activitiesData).success(function(data){
             if(data.code == 0){
-                $scope.viewData.entities.push(data.result);
+                //$scope.viewData.entities.push(data.result);
+                init();
                 $(".add-qrcode").modal('hide');
+                initActivitiesData();
             }
         });
     };
@@ -153,6 +174,7 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
             if(data.code == 0){
                 init();
                 $(".update-entity").modal('hide');
+                initEntityData();
             }
         });
     };
@@ -163,6 +185,7 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
             if(data.code == 0){
                 init();
                 $(".del-entity").modal('hide');
+                initEntityData();
             }
         });
     };
@@ -173,7 +196,7 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
            $scope.entityData.entity_has_tagIds.splice(idx, 1);
        }
        else {
-           $scope.entityData.entity_has_tagIds.push(tagId);
+           $scope.entityData.entity_has_tagIds.push(id);
        }
    };
 

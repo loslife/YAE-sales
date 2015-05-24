@@ -69,6 +69,9 @@ app.controller('TagsListCtrl', ['$rootScope', '$scope', '$http','$location', fun
             
         });
     };
+    $scope.cancelSetAddChannel = function(){
+        $scope.channel = null;
+    };
     //点击删除按钮弹出提示框
     $scope.setDeleteChannel = function (data) {
         $scope.channel = data;

@@ -73,6 +73,13 @@
             "auth": false,
             "impl": "installService.updatePerson",
             "comment": "更新专员"
+        },{
+            "name": "installRecord",
+            "path": "/install/installRecord",
+            "method": "post",
+            "auth": false,
+            "impl": "installService.installRecord",
+            "comment": "推荐码入库"
         }
     ],
     "statics": [

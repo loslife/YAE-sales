@@ -120,18 +120,29 @@ app.controller('TopicListCtrl', ['$rootScope', '$scope', '$http','$location','$s
     };
 
     $scope.addPerson = function(){
+        //未填写名称提示
+        if($scope.formData.name == undefined || $scope.formData.name == null) {
+            return alert("请填写名称");
+        }
+        //未选择渠道提示
+        if($scope.formData.channelId == undefined || $scope.formData.channelId == null) {
+            return alert("请选择渠道");
+        }
         var url = "/sales/install/addPerson";
         $http.post(url, $scope.formData).success(function (data) {
-            if(data.code != 0){
+            if (data.code != 0) {
                 return alert("系统错误，请联系管理员");
             }
-            if($scope.selectedChannel.id == data.result.channel_id){
+            if ($scope.selectedChannel.id == data.result.channel_id) {
                 $scope.myData.push(data.result);
             }
             $scope.formData = null;
             $("#add-person").modal('hide');
         });
-    }
+    };
+    $scope.cancelSetAddPerson = function(){
+        $scope.formData = null;
+    };
 
     $scope.setUpdatePerson = function(data){
         $scope.formData = data;

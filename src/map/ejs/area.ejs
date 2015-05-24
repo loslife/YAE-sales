@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html{
+            width: 100%;
+            height: 100%;
+            background-color: #FFF9DD;
+            font-family:"微软雅黑";
+            overflow-y: auto;
+        }
+        #map {
+            width: 90%;
+            height: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 5px;
+            border: 2px solid #83B447;
+            font-family:"微软雅黑";
+            overflow: hidden;
+        }
+
+        #allList {
+            width:90%;
+            height: 400px;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #5B4B3A;
+            font-size:14px;
+            line-height:20px;
+            overflow-y: auto;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=C739fdeec7706c19753d59798c3ae297"></script>
+    <!--加载鼠标绘制工具-->
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+    <!--加载检索工具-->
+    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+    <script src="/framework/js/jquery/jquery.min.js"></script>
+    <title>战略地图</title>
+</head>
+<body>
+<div id="map"></div>
+<div id="allList"></div>
+</body>
+
+<script type="text/javascript">
+    var pageData = '<%- JSON.stringify({area: area, level: level,store: store, regionPoints: regionPoints}) %>';
+</script>
+<script src="/map/bMap-area.js"></script>
+
+</html>

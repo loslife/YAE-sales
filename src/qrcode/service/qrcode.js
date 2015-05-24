@@ -241,25 +241,25 @@ function updateEntity(req, res, next){
     var id = req.params["id"];
     var name = req.body.name;
     var tags = req.body.tags;
-    var sql = "update channel_entities set name=:name where id=:id";
-    var sql1= "delete from entities_has_tags where entity_id=:id";
-    var sql2= "inser into entities_has_tags (id,entity_id,tag_id) values (:id,:entity_id,:tag_id)";
-    dbHelper.execSql(sql1, {id:id}, function(error, data){
-        if(error){
-            return next(error);
-        }
-        for(var i=0;i<tags.length;i++){
-            var uuids = uuid.v1();
-            dbHelper.execSql(sql2, {id:uuids, entity_id:id, tag_id:tags[i]}, function(err, result){
-                if(err){
-                    return next(err);
-                }
-            });
-        }
+    var sqlArray = [];
+    sqlArray.push({
+        statement: "update channel_entities set name=:name where id=:id",
+        value: {id:id,name:name}
     });
-    dbHelper.execSql(sql, {id:id,name:name},function(error, data){
-        if(error){
-            return next(error);
+    sqlArray.push({
+        statement: "delete from entities_has_tags where entity_id=:id",
+        value: {id:id}
+    });
+    for(var i=0;i<tags.length;i++){
+        var uuids = uuid.v1();
+        sqlArray.push({
+            statement: "insert into entities_has_tags (id,entity_id,tag_id) values (:id,:entity_id,:tag_id)",
+            value: {id:uuids, entity_id:id, tag_id:tags[i]}
+        });
+    }
+    dbHelper.bacthSeriesExecSql(sqlArray, function(err, result){
+        if(err){
+            return next(err);
         }
         doResponse(req, res, "ok");
     });

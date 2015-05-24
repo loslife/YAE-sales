@@ -10,6 +10,7 @@ exports.getCountPersonByChannelId = getCountPersonByChannelId;
 exports.deletePerson = deletePerson;
 exports.addPerson = addPerson;
 exports.updatePerson = updatePerson;
+exports.installRecord = installRecord;
 
 //获取渠道列表
 function getAllChannel(req, res, next){
@@ -143,5 +144,47 @@ function updatePerson(req, res, next){
             return next(err);
         }
         doResponse(req, res, {message: "ok"});
+    });
+}
+
+//推荐码入库
+function installRecord(req, res, next){
+    //判断此账号是否已推荐
+    var account_id = req.body.uid;
+    var sql = "select count(1) 'count' from install_records where account = :account_id";
+    dbHelper.execSql(sql, {account_id: account_id}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        if(result && result[0] && result[0].count > 0){
+            return next({code: 1,message: "此账号已推荐"});
+        }
+        //推荐码入库
+        var code = req.body.content;
+        var sql = "select id from channel_persons where install_code = :code";
+        dbHelper.execSql(sql, {code: code}, function(err, result){
+            if(err){
+                return next(err);
+            }
+            if(result && result[0] && result[0].id){
+                var sql = "insert into install_records(id,person_id,device_id,account,install_date) " +
+                    "values(:id,:person_id,:device_id,:account,:install_date)";
+                var param = {
+                    id: uuid.v1(),
+                    person_id: result[0].id,
+                    account: account_id,
+                    device_id: null,
+                    install_date: new Date().getTime()
+                };
+                dbHelper.execSql(sql, param, function(err){
+                    if(err){
+                        return next(err);
+                    }
+                    doResponse(req, res, {message: "ok"});
+                });
+            }else{
+                next({code: 1,message: "推荐码无效"});
+            }
+        });
     });
 }

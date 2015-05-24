@@ -10,7 +10,30 @@
         }
     },
     "services": [
-
+      {
+        "name": "showArea",
+        "path": "/map/:area",
+        "method": "get",
+        "auth": false,
+        "impl": "mapService.showArea",
+        "comment": "大区地图，可编辑"
+      },
+      {
+        "name": "showRegion",
+        "path": "/map/:area/:region",
+        "method": "get",
+        "auth": false,
+        "impl": "mapService.showRegion",
+        "comment": "显示小区域地图"
+      },
+      {
+        "name": "postPins",
+        "path": "/map/postPins",
+        "method": "post",
+        "auth": false,
+        "impl": "mapService.postPins",
+        "comment": ""
+      }
     ],
     "statics": [
         {
@@ -19,6 +42,12 @@
             "comment": "地图管理"
         }
     ],
+    "ejsviews": [
+    {
+      "dir": "/ejs",
+      "comment": ""
+    }
+  ],
     "dataModelSchema": [
 
     ],
