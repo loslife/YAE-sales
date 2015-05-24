@@ -110,7 +110,7 @@ drawController.prototype.initialize = function(map) {
     backDraw = document.createElement("div");
     backDraw.appendChild(document.createTextNode("后退"));
     makeSure = document.createElement("div");
-    makeSure.appendChild(document.createTextNode("确定"));
+    makeSure.appendChild(document.createTextNode("上传"));
 
     div.style.height = "30px";
     div.style.width = "414px";
