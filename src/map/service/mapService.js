@@ -13,6 +13,7 @@ var store = [];
 var area = "";
 var areaRegions = [];
 var areaRegionsPoints = [];
+var areaRegionName = [];
 
 function showArea(req, res, next){
 
@@ -21,7 +22,7 @@ function showArea(req, res, next){
     async.series([getArea, getStores, getAreaRegions, getAreaRegionPoints], function(err){
         if(err === "empty"){
             area = "nanjing";
-            res.render("area", {layout: false, area: "南京", level: 13,store: [], regionPoints: []});
+            res.render("area", {layout: false, area: "南京", level: 13,store: [], regionPoints: [], regionName: []});
             return ;
         }
 
@@ -29,8 +30,9 @@ function showArea(req, res, next){
             return;
         }
 
-        res.render("area", {layout: false, area: data.center, level: data.level,store: store, regionPoints: areaRegionsPoints});
+        res.render("area", {layout: false, area: data.center, level: data.level,store: store, regionPoints: areaRegionsPoints, regionName: areaRegionName});
         areaRegionsPoints = [];
+        areaRegionName = [];
     });
 
     function getArea(callback){
@@ -67,7 +69,7 @@ function showArea(req, res, next){
     }
 
     function getAreaRegions(callback){
-        var sql = "select * from regions where area_id = :area_id;";
+        var sql = "select * from regions where area_id = :area_id order by create_date asc;";
 
         dbHelper.execSql(sql, {area_id: data.id}, function(error, result){
             if(error){
@@ -77,6 +79,7 @@ function showArea(req, res, next){
 
             _.each(result, function(item){
                 areaRegions.push(item.id);
+                areaRegionName.push(item.name);
             });
             callback(null);
         });
@@ -165,7 +168,7 @@ function showRegion(req, res, next){
     }
 
     function getAreaRegions(callback){
-        var sql = "select * from regions where area_id = :area_id and name = :name;";
+        var sql = "select * from regions where area_id = :area_id and name = :name order by create_date asc;";
 
         dbHelper.execSql(sql, {area_id: regionData.id, name: region}, function(error, result){
             if(error){
@@ -179,7 +182,6 @@ function showRegion(req, res, next){
             callback(null);
         });
     }
-
 
     function getAreaRegionPoints(callback){
         var sql = "select * from region_points";
@@ -260,10 +262,13 @@ function postPins(req, res, next){
 
         function buildSql() {
             var uids = [];
+            var index = 0;
             _.each(name, function (regions) {
                 var uid = uuid.v1();
                 uids.push(uid);
-                allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions}, null, true));
+                var date = new Date().getTime();
+                allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index}, null, true));
+                index++;
             });
 
             for(var i = 0; i < uids.length; i++){
