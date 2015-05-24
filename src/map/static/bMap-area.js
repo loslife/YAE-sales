@@ -43,13 +43,7 @@ function init(){
     if(mapData.regionName){
         regionName = mapData.regionName;
         getCount = mapData.regionName.length;
-        var showCircle = "";
-        for(var i = 0; i < getCount; i++){
-            var str = (i + 1) +"." +mapArea + "区域" + regionName[i] + "战地<br/><br/>";
-            showCircle += str;
-        }
-
-        document.getElementById("allList").innerHTML = showCircle;
+        showArea();
     }
 
     var mapLevel = mapData.level || 13;
@@ -287,14 +281,7 @@ function makeSureDraw() {
     saveCount = overlays.length;
 
     var areaPoints = [];
-    var showCircle = "";
-    for(var i = 0; i < saveCount + getCount; i++){
-        var str = (i + 1) +"." +mapArea + "区域" + regionName[i] + "战地<br/><br/>";
-        showCircle += str;
-    }
-
-    document.getElementById("allList").innerHTML = showCircle;
-
+    showArea();
     if(exitPoints === saveCount){
         return ;
     }
@@ -434,6 +421,17 @@ function show(showPoints) {
             point = [];
         }
     }
+}
+
+//显示划分区域
+function showArea(){
+    var showCircle = "";
+    for(var i = 0; i < saveCount + getCount; i++){
+        var str = (i + 1) +"." +mapArea + "区域" + regionName[i] + "战地<br/><br/>";
+        showCircle += str;
+    }
+
+    document.getElementById("allList").innerHTML = showCircle;
 }
 
 window.onload = init;
