@@ -1,6 +1,7 @@
 app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
 
 
+
     (function initData(){
         initViewData();
         initActivitiesData();
@@ -50,6 +51,7 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
         var tag_url = "/sales/activity/queryAllTags";
         var entity_url = "/sales/activity/queryAllEntities";
         var entity_has_tag_url = "/sales/activity/queryEntityHasTags";
+        var scan_count_url = "/sales/activity/queryScanCount";
         $http.get(url).success(function(data){
             if(data.code == 0){
                 $scope.viewData.activities = data.result;
@@ -68,6 +70,11 @@ app.controller('qrcodeCtrl', ['$rootScope', '$scope', '$http', function ($rootSc
         $http.get(entity_has_tag_url).success(function(data){
             if(data.code == 0){
                 $scope.viewData.tag_entity = data.result;
+            }
+        });
+        $http.get(scan_count_url).success(function(data){
+            if(data.code == 0){
+                $scope.viewData.scan_record = data.result;
             }
         });
     }
