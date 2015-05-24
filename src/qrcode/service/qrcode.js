@@ -20,6 +20,17 @@ exports.delEntity = delEntity;
 exports.updateTag = updateTag;
 exports.delTag = delTag;
 exports.queryEntityHasTags = queryEntityHasTags;
+exports.queryScanCount = queryScanCount;
+
+function queryScanCount(req, res, next){
+    var sql = "select * from scan_records";
+    dbHelper.execSql(sql, {}, function(error, data){
+        if(error){
+            return next(error);
+        }
+        doResponse(req, res, data)
+    });
+}
 
 function queryActivity(req, res, next){
     var sql = "select * from activities";

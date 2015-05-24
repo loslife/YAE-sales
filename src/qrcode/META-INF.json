@@ -101,7 +101,22 @@
             "auth": false,
             "impl": "qrcode.queryEntityHasTags",
             "comment": "查询实体拥有的标签"
+        },{
+            "name": "wxScan",
+            "path": "/activity/wxScan",
+            "method": "post",
+            "auth": false,
+            "impl": "qrcode.wxScan",
+            "comment": "微信扫描"
+        },{
+            "name": "queryScanCount",
+            "path": "/activity/queryScanCount",
+            "method": "get",
+            "auth": false,
+            "impl": "qrcode.queryScanCount",
+            "comment": "扫描统计"
         }
+
     ],
     "statics": [
         {
