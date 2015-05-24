@@ -1,4 +1,4 @@
-app.controller('TagsListCtrl', ['$rootScope', '$scope', '$http','$location', function ($rootScope, $scope, $http,$location) {
+app.controller('SalesChannelCtrl', ['$rootScope', '$scope', '$http','$location', function ($rootScope, $scope, $http,$location) {
 
     setTimeout(init,10);
     function init(){

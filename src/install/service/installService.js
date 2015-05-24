@@ -11,6 +11,7 @@ exports.deletePerson = deletePerson;
 exports.addPerson = addPerson;
 exports.updatePerson = updatePerson;
 exports.installRecord = installRecord;
+exports.getInstallRecord = getInstallRecord;
 
 //获取渠道列表
 function getAllChannel(req, res, next){
@@ -68,7 +69,10 @@ function getPersonByChannelId(req, res, next){
     var pageSize = parseInt(req.query.pageSize) || 10;
     var currentPage = parseInt(req.query.currentPage) || 1;
     var startIndex = (currentPage - 1) * pageSize;
-    var sql = "select * from channel_persons where channel_id = :channel_id limit :startIndex,:pageSize";
+    var sql = "select a.id 'id',a.name 'name',a.install_code 'install_code',count(b.person_id) 'count' " +
+        "from channel_persons a left join install_records b on a.id = b.person_id " +
+        "where a.channel_id = :channel_id " +
+        "group by a.id limit :startIndex,:pageSize";
     dbHelper.execSql(sql, {channel_id: channel_id,startIndex: startIndex,pageSize: pageSize}, function(err, result){
         if(err){
             return next(err);
@@ -186,5 +190,20 @@ function installRecord(req, res, next){
                 next({code: 1,message: "推荐码无效"});
             }
         });
+    });
+}
+
+//根据id获取推荐码入库情况
+function getInstallRecord(req, res, next){
+    var id = req.query.id;
+    var pageSize = parseInt(req.query.perPage) || 10;
+    var currentPage = parseInt(req.query.page) || 1;
+    var startIndex = (currentPage - 1) * pageSize;
+    var sql = "select * from install_records where person_id = :id limit :startIndex,:pageSize";
+    dbHelper.execSql(sql, {id: id,startIndex: startIndex,pageSize: pageSize}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, result);
     });
 }

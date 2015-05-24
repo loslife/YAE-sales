@@ -1,4 +1,4 @@
-app.controller('TopicListCtrl', ['$rootScope', '$scope', '$http','$location','$state', function ($rootScope, $scope, $http,$location,$state) {
+app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','$state', function ($rootScope, $scope, $http,$location,$state) {
 
     $scope.colors = ['primary', 'info', 'success', 'warning', 'danger', 'dark'];
 
@@ -83,11 +83,13 @@ app.controller('TopicListCtrl', ['$rootScope', '$scope', '$http','$location','$s
     }, true);
 
     var operation = '<span class="label bg-success" data-toggle="modal" data-target="#updata-person" ng-click="setUpdatePerson(row.entity)" ng-model="topicData">编辑</span>' +
-        ' <span class="label bg-danger" data-toggle="modal" data-target="#delete-person" ng-click="setDeletePerson(row.entity)">删除</span>';
+        ' <span class="label bg-danger" data-toggle="modal" data-target="#delete-person" ng-click="setDeletePerson(row.entity)">删除</span>' +
+        ' <span class="label bg-info" ng-click="goRecordDetail(row.entity)">详细</span>';
 
     $scope.columnDefs = [
         {field: 'name', displayName: '名称'},
         {field: 'install_code', displayName: '推荐码'},
+        {field: 'count', displayName: '装机数'},
         {field: '', displayName: '操作', cellTemplate: operation}
     ];
     $scope.gridOptions = {
@@ -175,5 +177,11 @@ app.controller('TopicListCtrl', ['$rootScope', '$scope', '$http','$location','$s
             }
             return result;
         }
+    }
+
+    $scope.goRecordDetail = function(data){
+        $state.go('app.recordDetail', {
+            id: data.id
+        });
     }
 }]);

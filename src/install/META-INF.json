@@ -80,6 +80,13 @@
             "auth": false,
             "impl": "installService.installRecord",
             "comment": "推荐码入库"
+        },{
+            "name": "getInstallRecord",
+            "path": "/install/getInstallRecord",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getInstallRecord",
+            "comment": "根据id获取推荐码入库情况"
         }
     ],
     "statics": [
