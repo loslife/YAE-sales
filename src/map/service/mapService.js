@@ -216,10 +216,16 @@ function postPins(req, res, next){
     var allSql = [];
 
     if(!areaPoints){
+        doResponse(req, res, "empty");
         return ;
     }
 
     async.series([getAreaId, addRegions], function(err, result){
+        if(err === "empty"){
+            doResponse(req, res, "empty");
+            return ;
+        }
+
         if(err){
             console.log(err);
             return next(err);
@@ -242,7 +248,12 @@ function postPins(req, res, next){
                 return ;
             }
 
+            if(!result){
+                callback("empty");
+                return ;
+            }
             area_id = result[0].id;
+
             callback(null);
             return ;
         });
