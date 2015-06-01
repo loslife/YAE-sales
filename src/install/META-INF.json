@@ -87,6 +87,13 @@
             "auth": false,
             "impl": "installService.getInstallRecord",
             "comment": "根据id获取推荐码入库情况"
+        },{
+            "name": "getInstallRecordCount",
+            "path": "/install/getInstallRecordCount",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getInstallRecordCount",
+            "comment": "根据id获取推荐码入库总数"
         }
     ],
     "statics": [

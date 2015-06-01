@@ -82,7 +82,7 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
         }
     }, true);
 
-    var operation = '<span class="label bg-success" data-toggle="modal" data-target="#updata-person" ng-click="setUpdatePerson(row.entity)" ng-model="topicData">编辑</span>' +
+    var operation = '<span class="label bg-success" data-toggle="modal" data-target="#updata-person" ng-click="setUpdatePerson(row.entity)">编辑</span>' +
         ' <span class="label bg-danger" data-toggle="modal" data-target="#delete-person" ng-click="setDeletePerson(row.entity)">删除</span>' +
         ' <span class="label bg-info" ng-click="goRecordDetail(row.entity)">详细</span>';
 
@@ -147,8 +147,8 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
     };
 
     $scope.setUpdatePerson = function(data){
-        $scope.formData = data;
-    }
+        $scope.formData = copyObject(data);
+    };
     $scope.updatePerson = function(){
         var url = "/sales/install/updatePerson";
         $http.post(url, $scope.formData).success(function (data) {
@@ -159,12 +159,15 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
                 if(item.id == $scope.formData.id){
                     //若修改为其他渠道，删除其在当前渠道模型中的数据
                     if($scope.selectedChannel.id != $scope.formData.channel_id){
-                        return $scope.myData = dataFilter(item);
+                        $scope.myData = dataFilter(item);
+                        return;
                     }
-                    item = $scope.formData;
+                    for(var i in $scope.formData){
+                        item[i] = $scope.formData[i];
+                    }
                 }
             });
-            $scope.formData = null;
+            //$scope.formData = null;
             $("#update-person").modal('hide');
         });
 
@@ -183,5 +186,13 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
         $state.go('app.recordDetail', {
             id: data.id
         });
+    }
+
+    function copyObject(obj){
+        var rs = {};
+        for(var i in obj){
+            rs[i] = obj[i];
+        }
+        return rs;
     }
 }]);

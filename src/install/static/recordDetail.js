@@ -34,7 +34,7 @@ app.controller('recordDetail', ['$rootScope', '$scope', '$http','$location','$st
     };
 
     $scope.$watch('pagingOptions', function (newVal, oldVal) {
-        if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage && newVal) {
+        if (newVal !== oldVal && (newVal.currentPage !== oldVal.currentPage || newVal.pageSize !== oldVal.pageSize) && newVal) {
             $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
         }
     }, true);
@@ -66,6 +66,7 @@ app.controller('recordDetail', ['$rootScope', '$scope', '$http','$location','$st
     //初始操作
     (function init(){
         $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+        $scope.getPageDataCountAsync();
     })();
 
 

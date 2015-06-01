@@ -12,6 +12,7 @@ exports.addPerson = addPerson;
 exports.updatePerson = updatePerson;
 exports.installRecord = installRecord;
 exports.getInstallRecord = getInstallRecord;
+exports.getInstallRecordCount = getInstallRecordCount;
 
 //获取渠道列表
 function getAllChannel(req, res, next){
@@ -69,7 +70,7 @@ function getPersonByChannelId(req, res, next){
     var pageSize = parseInt(req.query.pageSize) || 10;
     var currentPage = parseInt(req.query.currentPage) || 1;
     var startIndex = (currentPage - 1) * pageSize;
-    var sql = "select a.id 'id',a.name 'name',a.install_code 'install_code',count(b.person_id) 'count' " +
+    var sql = "select a.id 'id',a.channel_id 'channel_id',a.name 'name',a.install_code 'install_code',count(b.person_id) 'count' " +
         "from channel_persons a left join install_records b on a.id = b.person_id " +
         "where a.channel_id = :channel_id " +
         "group by a.id limit :startIndex,:pageSize";
@@ -119,7 +120,7 @@ function addPerson(req, res, next){
             if(err){
                 return next(err);
             }
-            doResponse(req, res, {id: id,channel_id: channel_id,name: name,install_code: code});
+            doResponse(req, res, {id: id,channel_id: channel_id,name: name,install_code: code,count: 0});
         });
     });
 }
@@ -177,7 +178,7 @@ function installRecord(req, res, next){
                     id: uuid.v1(),
                     person_id: result[0].id,
                     account: username,
-                    device_id: null,
+                    device_id: req.body.device_id,
                     install_date: new Date().getTime()
                 };
                 dbHelper.execSql(sql, param, function(err){
@@ -205,5 +206,17 @@ function getInstallRecord(req, res, next){
             return next(err);
         }
         doResponse(req, res, result);
+    });
+}
+
+//根据id获取推荐码入库总数
+function getInstallRecordCount(req, res, next){
+    var id = req.query.id;
+    var sql = "select count(1) 'count' from install_records where person_id = :id";
+    dbHelper.execSql(sql, {id: id}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, result[0]);
     });
 }

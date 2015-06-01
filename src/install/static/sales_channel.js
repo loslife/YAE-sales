@@ -72,6 +72,9 @@ app.controller('SalesChannelCtrl', ['$rootScope', '$scope', '$http','$location',
     $scope.cancelSetAddChannel = function(){
         $scope.channel = null;
     };
+    $scope.setAddChannel = function(){
+        $scope.channel = null;
+    }
     //点击删除按钮弹出提示框
     $scope.setDeleteChannel = function (data) {
         $scope.channel = data;
