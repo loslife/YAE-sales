@@ -154,9 +154,9 @@ function updatePerson(req, res, next){
 //推荐码入库
 function installRecord(req, res, next){
     //判断此账号是否已推荐
-    var account_id = req.body.uid;
-    var sql = "select count(1) 'count' from install_records where account = :account_id";
-    dbHelper.execSql(sql, {account_id: account_id}, function(err, result){
+    var username = req.body.username;
+    var sql = "select count(1) 'count' from install_records where account = :account";
+    dbHelper.execSql(sql, {account: username}, function(err, result){
         if(err){
             return next(err);
         }
@@ -176,7 +176,7 @@ function installRecord(req, res, next){
                 var param = {
                     id: uuid.v1(),
                     person_id: result[0].id,
-                    account: account_id,
+                    account: username,
                     device_id: null,
                     install_date: new Date().getTime()
                 };
