@@ -7,28 +7,32 @@
         body, html{
             width: 100%;
             height: 100%;
-            background-color: #FFF9DD;
-            font-family:"微软雅黑";
-            overflow-y: auto;
-        }
-        #map {
-            width: 90%;
-            height: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 5px;
-            border: 2px solid #83B447;
+            background-color: #ffffff;
             font-family:"微软雅黑";
             overflow: hidden;
         }
+        #map {
+            width: 80%;
+            height: 92%;
+            margin-left: 1%;
+            margin-top: 1%;
+            border: 2px solid #83B447;
+            font-family:"微软雅黑";
+            background-color: #ffffff;
+            overflow: hidden;
+            float: left;
+        }
 
         #allList {
-            width:90%;
-            height: 400px;
-            margin-top: 10px;
-            margin-left: auto;
-            margin-right: auto;
+            width: 14%;
+            height: 88%;
+            margin-left: 82%;
+            margin-top: 1%;
+            padding: 1%;
             color: #5B4B3A;
+            background-color: #FFF9DD;
+            border: 2px solid #83B447;
+            font-family:"微软雅黑";
             font-size:14px;
             line-height:20px;
             overflow-y: auto;
@@ -49,7 +53,7 @@
 </body>
 
 <script type="text/javascript">
-    var pageData = '<%- JSON.stringify({area: area, level: level,store: store, regionPoints: regionPoints}) %>';
+    var pageData = '<%- JSON.stringify({area: area, level: level,store: store, regionPoints: regionPoints, regionName: regionName}) %>';
 </script>
 <script src="/map/bMap-area.js"></script>
 

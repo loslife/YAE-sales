@@ -4,10 +4,6 @@ var map = new BMap.Map("map");
 var index = 0;
 var saveCount = 0;
 var getCount = 0;
-var showPoints = [];
-var savePointsArea = [];
-var getAreaPoints = [];
-var areaNickName = [];
 var myGeo = new BMap.Geocoder();
 var startDraw;
 var stopDraw;
@@ -21,6 +17,7 @@ var nailStoreName = [];
 var storeMessage = [];
 var mapData;
 var mapArea;
+var regionName = [];
 
 function init(){
     mapData = JSON.parse(replaceSpecialChar(pageData));
@@ -40,15 +37,13 @@ function init(){
     }
 
     if(mapData.regionPoints){
-        getCount = mapData.regionPoints.length;
-        var showCircle = "";
-        for(var i = 0; i < getCount; i++){
-            var str = (i + 1) +"." +mapArea + "区" + (i + 1) + "号战地<br/><br/>";
-            showCircle += str;
-        }
-
-        document.getElementById("allList").innerHTML = showCircle;
         show(mapData.regionPoints);
+    }
+
+    if(mapData.regionName){
+        regionName = mapData.regionName;
+        getCount = mapData.regionName.length;
+        showArea();
     }
 
     var mapLevel = mapData.level || 13;
@@ -107,15 +102,15 @@ drawController.prototype = new BMap.Control();
 drawController.prototype.initialize = function(map) {
     var div = document.createElement("div");
     startDraw = document.createElement("div");
-    startDraw.appendChild(document.createTextNode("划分"));
+    startDraw.appendChild(document.createTextNode("编辑"));
     stopDraw = document.createElement("div");
-    stopDraw.appendChild(document.createTextNode("结束"));
+    stopDraw.appendChild(document.createTextNode("完成"));
     clearDraw = document.createElement("div");
     clearDraw.appendChild(document.createTextNode("清除"));
     backDraw = document.createElement("div");
     backDraw.appendChild(document.createTextNode("后退"));
     makeSure = document.createElement("div");
-    makeSure.appendChild(document.createTextNode("确定"));
+    makeSure.appendChild(document.createTextNode("上传"));
 
     div.style.height = "30px";
     div.style.width = "414px";
@@ -286,28 +281,21 @@ function makeSureDraw() {
     saveCount = overlays.length;
 
     var areaPoints = [];
-    var showCircle = "";
-    var name = [];
-    for(var i = 1; i <= saveCount + getCount; i++){
-        var str = i +"." +mapArea + "区" + i + "号战地<br/><br/>";
-        showCircle += str;
-    }
-
-    document.getElementById("allList").innerHTML = showCircle;
-
+    showArea();
     if(exitPoints === saveCount){
         return ;
     }
 
+    var postRegionName = [];
     for(var i = exitPoints; i < saveCount; i++){
         areaPoints.push(overlays[i].W);
-        name.push(i + 1 + getCount);
+        postRegionName.push(regionName[getCount + i]);
     }
 
     $.post('/sales/map/postPins',
         {
             areaPoints: areaPoints,
-            nickName: name
+            nickName: postRegionName
         },function(data,status){
             console.log(data);
         });
@@ -338,9 +326,26 @@ function openInfo(content, name, e){
 var overlays = [];
 
 var overlaycomplete = function(e){
+    if(e.overlay.W.length <= 1){
+        closeDraw();
+        stopDrawStyle();
+        return ;
+    }
     overlays.push(e.overlay);
     stopDrawStyle();
+    setAreaName();
+    showArea();
 };
+
+//输入圈名
+function setAreaName() {
+    var name = prompt("请输入划分区域的别称：", "");
+    if(!name){
+        name = overlays.length + getCount;
+    }
+    regionName.push(name);
+}
+
 var styleOptions = {
     strokeColor:"red",    //边线颜色。
     fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
@@ -380,10 +385,12 @@ function closeDraw() {
 function clearAll() {
     for(var i = saveCount; i < overlays.length; i++){
         map.removeOverlay(overlays[i]);
+        regionName.pop();
     }
 
     overlays.length = saveCount
     closeDraw();
+    showArea();
 }
 
 //退回上一步
@@ -394,7 +401,9 @@ function backStep() {
     }
 
     map.removeOverlay(overlays[overlays.length - 1]);
+    regionName.pop();
     overlays.length--;
+    showArea();
 }
 
 //显示线
@@ -415,6 +424,17 @@ function show(showPoints) {
             point = [];
         }
     }
+}
+
+//显示划分区域
+function showArea(){
+    var showCircle = "";
+    for(var i = 0; i < overlays.length + getCount; i++){
+        var str = (i + 1) +"." +mapArea + "区" + regionName[i] + "战区<br/><br/>";
+        showCircle += str;
+    }
+
+    document.getElementById("allList").innerHTML = showCircle;
 }
 
 window.onload = init;
