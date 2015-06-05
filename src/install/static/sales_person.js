@@ -84,7 +84,8 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
 
     var operation = '<span class="label bg-success" data-toggle="modal" data-target="#updata-person" ng-click="setUpdatePerson(row.entity)">编辑</span>' +
         ' <span class="label bg-danger" data-toggle="modal" data-target="#delete-person" ng-click="setDeletePerson(row.entity)">删除</span>' +
-        ' <span class="label bg-info" ng-click="goRecordDetail(row.entity)">详细</span>';
+        ' <span class="label bg-info" ng-click="goRecordDetail(row.entity)">详细</span>' +
+        ' <span class="label bg-danger" data-toggle="modal" data-target="#showUrl" ng-click="setPersonUrl(row.entity.id)">获取url</span>';
 
     $scope.columnDefs = [
         {field: 'name', displayName: '名称'},
@@ -188,6 +189,18 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
         });
     }
 
+    $scope.setPersonUrl = function(id){
+        var loc = window.location;
+        $scope.url = loc.protocol + "//" + loc.hostname + ":" + loc.port + "/framework/person.html?id=" + id;
+    }
+
+    $scope.setChannelUrl = function(){
+        var id = $scope.selectedChannel.id;
+        var loc = window.location;
+        $scope.url = loc.protocol + "//" + loc.hostname + ":" + loc.port + "/framework/channel.html?id=" + id;
+    }
+
+
     function copyObject(obj){
         var rs = {};
         for(var i in obj){
@@ -195,4 +208,5 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
         }
         return rs;
     }
+
 }]);

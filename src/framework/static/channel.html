@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css"/>
+    <style type="text/css">
+        #person{
+            font-size: xx-large;
+        }
+        table{
+            text-align: left;
+            font-size: xx-large;
+        }
+        table thead{
+            font-weight: bold;
+        }
+    </style>
+    <!-- jQuery -->
+    <script src="js/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script>
+
+        function getQueryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        }
+
+        function setTable(result){
+            for(var i=0; i<result.length; i++){
+                var str = "<tr><td>" + result[i].name + "</td><td>" + result[i].install_code + "</td><td>" + result[i].count + "</td></tr>";
+                $("table tbody").append(str);
+            }
+        }
+
+        //获取渠道信息
+        function getChannelById(){
+            var id = getQueryString("id");
+            if(id == null || id == undefined){
+                alert("id错误，请联系管理员");
+            }
+            var url = "/sales/install/getChannelById?id=" + id;
+            $.get(url, function(data){
+                if(data && data.result){
+                    var name = data.result.name || '';
+                    var str = "渠道名称：" + name + "</br>";
+                    $("#person").append(str);
+                }
+            });
+        }
+
+        //获取装机情况
+        function getChannelInstallRecord(){
+            var id = getQueryString("id");
+            if(id == null || id == undefined){
+                alert("id错误，请联系管理员");
+            }
+            var url = '/sales/install/getPersonByChannelIdWithoutLimit?channel_id=' + id;
+            $.get(url, function(data){
+                if(data && data.result){
+                    setTable(data.result);
+                }
+            });
+        }
+
+        $(function(){
+            getChannelById();
+            getChannelInstallRecord();
+        });
+
+    </script>
+</head>
+<body>
+    <div class="panel panel-default">
+        <div class="panel-heading" id="person">
+
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>推荐码</th>
+                    <th>装机数</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css"/>
+    <style type="text/css">
+        #person{
+            font-size: xx-large;
+        }
+        table{
+            text-align: left;
+            font-size: xx-large;
+        }
+        table thead{
+            font-weight: bold;
+        }
+    </style>
+    <!-- jQuery -->
+    <script src="js/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script>
+
+        function getQueryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        }
+
+        function setTable(result){
+            for(var i=0; i<result.length; i++){
+                var str = "<tr><td>" + result[i].days + "</td><td>" + result[i].count + "</td></tr>";
+                $("table tbody").append(str);
+            }
+        }
+
+        //获取专员个人信息
+        function getPersonById(){
+            var id = getQueryString("id");
+            if(id == null || id == undefined){
+                alert("id错误，请联系管理员");
+            }
+            var url = "/sales/install/getPersonById?id=" + id;
+            $.get(url, function(data){
+                if(data && data.result){
+                    var name = data.result.name || '';
+                    var install_code = data.result.install_code || '';
+                    var str = "姓名：" + name + "</br>推荐码：" + install_code;
+                    $("#person").append(str);
+                }
+            });
+        }
+
+        //获取装机情况
+        function getPersonInstallRecord(){
+            var id = getQueryString("id");
+            if(id == null || id == undefined){
+                alert("id错误，请联系管理员");
+            }
+            var url = "/sales/install/getPersonInstallRecord?id=" + id;
+            $.get(url, function(data){
+                if(data && data.result){
+                    setTable(data.result);
+                }
+            });
+        }
+
+        $(function(){
+            getPersonById();
+            getPersonInstallRecord();
+        });
+
+    </script>
+</head>
+<body>
+    <div class="panel panel-default">
+        <div class="panel-heading" id="person">
+
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>装机数</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

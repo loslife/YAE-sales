@@ -6,6 +6,7 @@ exports.addChannel = addChannel;
 exports.deleteChannel = deleteChannel;
 exports.getCountChannel = getCountChannel;
 exports.getPersonByChannelId = getPersonByChannelId;
+exports.getPersonByChannelIdWithoutLimit = getPersonByChannelIdWithoutLimit;
 exports.getCountPersonByChannelId = getCountPersonByChannelId;
 exports.deletePerson = deletePerson;
 exports.addPerson = addPerson;
@@ -13,6 +14,9 @@ exports.updatePerson = updatePerson;
 exports.installRecord = installRecord;
 exports.getInstallRecord = getInstallRecord;
 exports.getInstallRecordCount = getInstallRecordCount;
+exports.getPersonInstallRecord = getPersonInstallRecord;
+exports.getPersonById = getPersonById;
+exports.getChannelById = getChannelById;
 
 //获取渠道列表
 function getAllChannel(req, res, next){
@@ -79,6 +83,33 @@ function getPersonByChannelId(req, res, next){
             return next(err);
         }
         doResponse(req, res, result);
+    });
+}
+
+//根据渠道id查询专员无分页
+function getPersonByChannelIdWithoutLimit(req, res, next){
+    var channel_id = req.query.channel_id;
+    var sql = "select a.id 'id',a.channel_id 'channel_id',a.name 'name',a.install_code 'install_code',count(b.person_id) 'count' " +
+        "from channel_persons a left join install_records b on a.id = b.person_id " +
+        "where a.channel_id = :channel_id " +
+        "group by a.id ";
+    dbHelper.execSql(sql, {channel_id: channel_id}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, result);
+    });
+}
+
+//根据id查询专员
+function getPersonById(req, res, next){
+    var id = req.query.id;
+    var sql = "select * from channel_persons where id = :id";
+    dbHelper.execSql(sql, {id: id}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, result[0]);
     });
 }
 
@@ -156,8 +187,9 @@ function updatePerson(req, res, next){
 function installRecord(req, res, next){
     //判断此账号是否已推荐
     var username = req.body.username;
-    var sql = "select count(1) 'count' from install_records where account = :account";
-    dbHelper.execSql(sql, {account: username}, function(err, result){
+    var device_id = req.body.device_id;
+    var sql = "select count(1) 'count' from install_records where account = :account or device_id = :device_id";
+    dbHelper.execSql(sql, {account: username,device_id: device_id}, function(err, result){
         if(err){
             return next(err);
         }
@@ -178,7 +210,7 @@ function installRecord(req, res, next){
                     id: uuid.v1(),
                     person_id: result[0].id,
                     account: username,
-                    device_id: req.body.device_id,
+                    device_id: device_id,
                     install_date: new Date().getTime()
                 };
                 dbHelper.execSql(sql, param, function(err){
@@ -213,6 +245,31 @@ function getInstallRecord(req, res, next){
 function getInstallRecordCount(req, res, next){
     var id = req.query.id;
     var sql = "select count(1) 'count' from install_records where person_id = :id";
+    dbHelper.execSql(sql, {id: id}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, result[0]);
+    });
+}
+
+//按照日期统计个人装机情况
+function getPersonInstallRecord(req, res, next){
+    var id = req.query.id;
+    var sql = "select FROM_UNIXTIME( install_date/1000, '%Y%m%d' ) 'days',count(id) 'count' " +
+    "from install_records where person_id = :id group by days ";
+    dbHelper.execSql(sql, {id:id}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, result);
+    });
+}
+
+//根据id获取渠道信息
+function getChannelById(req, res, next){
+    var id = req.query.id;
+    var sql = "select * from channels where id = :id";
     dbHelper.execSql(sql, {id: id}, function(err, result){
         if(err){
             return next(err);
