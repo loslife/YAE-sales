@@ -16,13 +16,17 @@ var areaRegionsPoints = [];
 var areaRegionName = [];
 
 function showArea(req, res, next){
-
+    var areaDefault;
+    var isExist = "NO";
     area = req.params["area"];
 
-    async.series([getArea, getStores, getAreaRegions, getAreaRegionPoints], function(err){
-        if(err === "empty"){
+    async.series([getArea, checkAreaExist, getStores, getAreaRegions, getAreaRegionPoints], function(err){
+        if(err === "addArea"){
             area = "nanjing";
-            res.render("area", {layout: false, area: "南京", level: 13,store: [], regionPoints: [], regionName: []});
+            res.render("area", {layout: false, area: data.center, level: data.level ,store: store, regionPoints: areaRegionsPoints, regionName: areaRegionName, isExist: isExist});
+            areaRegionsPoints = [];
+            areaRegionName = [];
+            areaDefault = "";
             return ;
         }
 
@@ -30,7 +34,7 @@ function showArea(req, res, next){
             return;
         }
 
-        res.render("area", {layout: false, area: data.center, level: data.level,store: store, regionPoints: areaRegionsPoints, regionName: areaRegionName});
+        res.render("area", {layout: false, area: data.center, level: data.level,store: store, regionPoints: areaRegionsPoints, regionName: areaRegionName, isExist: isExist});
         areaRegionsPoints = [];
         areaRegionName = [];
     });
@@ -46,12 +50,74 @@ function showArea(req, res, next){
 
             data = result[0];
             if(!data){
-                callback("empty");
+                areaDefault = "nanjing";
+                callback(null);
                 return ;
             }
+
+            isExist = "YES";
             callback(null);
             return ;
         });
+    }
+
+    function checkAreaExist(callback) {
+        if(areaDefault != "nanjing") {
+            callback(null);
+            return ;
+        }
+
+        async.series([getDefault, setDefault], function(error, result) {
+            if(error) {
+                if(error === "defaultExist") {
+                    callback(null);
+                } else {
+                    callback(error);
+                }
+
+                return ;
+            }
+
+            callback("addArea");
+            return ;
+        });
+
+        function getDefault(callback) {
+            var sql = "select * from areas where name = :name;";
+
+            dbHelper.execSql(sql, {name: areaDefault}, function (error, result) {
+                if(error) {
+                    callback(error);
+                    return;
+                }
+
+                if(result[0]) {
+                    data = result[0];
+                    area = "nanjing";
+                    callback("defaultExist");
+                    return ;
+                }
+
+                callback(null);
+                return ;
+            });
+        }
+
+        function setDefault (callback) {
+            var sql = "insert into areas (id, name, center, level) values (:id, :name, :center, :level);";
+            var uid = uuid.v1();
+
+            dbHelper.execSql(sql, {id: uid, name: "nanjing", center: "南京", level: 13}, function(error, result) {
+                if(error) {
+                    callback(error);
+                    return ;
+                }
+
+                data = {id: uid, name: "nanjing", center: "南京", level: 13};
+                callback(null);
+                return ;
+            });
+        }
     }
 
     function getStores(callback){

@@ -29,6 +29,10 @@ function init(){
     storeMessage = mapData.store
     mapArea = mapData.area || "南京";
 
+    if(mapData.isExist === "NO") {
+        alert("没有当前区域，显示默认区域“南京！");
+    }
+
     if(storeMessage){
         for(var i = 0; i < storeMessage.length; i++){
             nailStoreAddress.push(storeMessage[i].address);
