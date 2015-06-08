@@ -159,7 +159,7 @@ function addPerson(req, res, next){
 //内部接口，获取非重复推荐码
 function getInstallCode(callback){
     var sql = "select count(1) 'count' from channel_persons where install_code = :code";
-    var code = Math.round(900000 * Math.random() + 100000);
+    var code = Math.round(900 * Math.random() + 100);
     dbHelper.execSql(sql, {code: code}, function(err, result){
         if(err){
             return callback(err);
