@@ -248,7 +248,7 @@ function postPins(req, res, next){
                 return ;
             }
 
-            if(!result){
+            if(!result[0]){
                 callback("empty");
                 return ;
             }
