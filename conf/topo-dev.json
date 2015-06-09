@@ -7,12 +7,12 @@
             "ip": "127.0.0.1",
             "port": 5011,
             "protocol": "http",
-            "baseurl": "http://127.0.0.1:5011/sales",
+            "baseurl": "http://192.168.1.105:5011/sales",
             "workerno": 1,
             "applications": [
                 "framework",
-                "map",
-                "qrcode"
+                "qrcode",
+                "install"
             ]
         }
     ],
