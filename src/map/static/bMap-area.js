@@ -347,6 +347,8 @@ function setAreaName() {
     if(!name){
         name = overlays.length + getCount;
     }
+
+
     regionName.push(name);
 }
 

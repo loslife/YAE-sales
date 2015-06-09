@@ -3,6 +3,7 @@ var async = require("async");
 var uuid = require('node-uuid');
 var _ = require("underscore");
 var sqlHelper = require(FRAMEWORKPATH + "/db/sqlHelper");
+var cnToPyin = require("./cnToPyin.js");
 
 exports.showArea = showArea;
 exports.showRegion = showRegion;
@@ -184,20 +185,17 @@ function showRegion(req, res, next){
     var regionStores = [];
     var regionsCircle = [];
     var regionsPoints = [];
+    var areaDefault;
 
-    async.series([getArea, getStores, getAreaRegions, getAreaRegionPoints], function(err, result){
-        if(err === "empty"){
-            area = "nanjing";
-            res.render("region", {layout: false, area: "南京", level: 13,store: [], regionPoints: []});
-            return ;
-        }
-
+    async.series([getArea, getDefaultArea, getStores, getAreaRegions, getAreaRegionPoints], function(err, result){
         if(err){
+            res.render("region", {layout: false, area: "南京", level: 13,store: [], regionPoints: []});
             return;
         }
 
         res.render("region", {layout: false, area: regionData.center, level: regionData.level,store: regionStores, regionPoints: regionsPoints});
         regionsPoints = [];
+        regionStores = [];
     });
 
     function getArea(callback){
@@ -211,9 +209,36 @@ function showRegion(req, res, next){
 
             regionData = result[0];
             if(!regionData){
-                callback("empty");
+                areaDefault = "nanjing";
+                region = "nanjing";
+                callback(null);
                 return ;
             }
+            callback(null);
+            return ;
+        });
+    }
+
+    function getDefaultArea(callback) {
+        if(areaDefault != "nanjing") {
+            callback(null);
+            return ;
+        }
+
+        var sql = "select * from areas where name = :name;";
+
+        dbHelper.execSql(sql, {name: areaDefault}, function(error, result){
+            if(error){
+                callback(error);
+                return ;
+            }
+
+            regionData = result[0];
+            if(!regionData){
+                callback(error);
+                return ;
+            }
+
             callback(null);
             return ;
         });
@@ -238,6 +263,11 @@ function showRegion(req, res, next){
 
         dbHelper.execSql(sql, {area_id: regionData.id, name: region}, function(error, result){
             if(error){
+                callback(error);
+                return ;
+            }
+
+            if(!result[0]) {
                 callback(error);
                 return ;
             }
@@ -280,11 +310,17 @@ function postPins(req, res, next){
     var name = req.body.nickName;
     var area_id;
     var allSql = [];
+    var webName = [];
+    var webBaseurl = this.global._g_clusterConfig.baseurl + "/map";
 
     if(!areaPoints){
         doResponse(req, res, "empty");
         return ;
     }
+
+    _.each(name, function (item) {
+        webName.push(cnToPyin.getRegionsWeb(item));
+    });
 
     async.series([getAreaId, addRegions], function(err, result){
         if(err === "empty"){
