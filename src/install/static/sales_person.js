@@ -85,7 +85,7 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
     var operation = '<span class="label bg-success" data-toggle="modal" data-target="#updata-person" ng-click="setUpdatePerson(row.entity)">编辑</span>' +
         ' <span class="label bg-danger" data-toggle="modal" data-target="#delete-person" ng-click="setDeletePerson(row.entity)">删除</span>' +
         ' <span class="label bg-info" ng-click="goRecordDetail(row.entity)">详细</span>' +
-        ' <span class="label bg-danger" data-toggle="modal" data-target="#showUrl" ng-click="setPersonUrl(row.entity.id)">获取url</span>';
+        ' <span class="label bg-danger" data-toggle="modal" data-target="#showUrl" ng-click="setPersonUrl(row.entity.install_code)">获取url</span>';
 
     $scope.columnDefs = [
         {field: 'name', displayName: '名称'},
@@ -189,9 +189,9 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
         });
     }
 
-    $scope.setPersonUrl = function(id){
+    $scope.setPersonUrl = function(code){
         var loc = window.location;
-        $scope.url = loc.protocol + "//" + loc.hostname + ":" + loc.port + "/framework/person.html?id=" + id;
+        $scope.url = loc.protocol + "//" + loc.hostname + ":" + loc.port + "/framework/person.html?code=" + code;
     }
 
     $scope.setChannelUrl = function(){

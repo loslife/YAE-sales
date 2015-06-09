@@ -40,11 +40,11 @@
 
         //获取专员个人信息
         function getPersonById(){
-            var id = getQueryString("id");
-            if(id == null || id == undefined){
-                alert("id错误，请联系管理员");
+            var code = getQueryString("code");
+            if(code == null || code == undefined){
+                alert("code错误，请联系管理员");
             }
-            var url = "/sales/install/getPersonById?id=" + id;
+            var url = "/sales/install/getPersonById?code=" + code;
             $.get(url, function(data){
                 if(data && data.result){
                     var name = data.result.name || '';
@@ -57,11 +57,11 @@
 
         //获取装机情况
         function getPersonInstallRecord(){
-            var id = getQueryString("id");
-            if(id == null || id == undefined){
-                alert("id错误，请联系管理员");
+            var code = getQueryString("code");
+            if(code == null || code == undefined){
+                alert("code错误，请联系管理员");
             }
-            var url = "/sales/install/getPersonInstallRecord?id=" + id;
+            var url = "/sales/install/getPersonInstallRecord?code=" + code;
             $.get(url, function(data){
                 if(data && data.result){
                     setTable(data.result);

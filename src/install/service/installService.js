@@ -103,9 +103,9 @@ function getPersonByChannelIdWithoutLimit(req, res, next){
 
 //根据id查询专员
 function getPersonById(req, res, next){
-    var id = req.query.id;
-    var sql = "select * from channel_persons where id = :id";
-    dbHelper.execSql(sql, {id: id}, function(err, result){
+    var code = req.query.code;
+    var sql = "select * from channel_persons where install_code = :code";
+    dbHelper.execSql(sql, {code: code}, function(err, result){
         if(err){
             return next(err);
         }
@@ -271,10 +271,10 @@ function getInstallRecordCount(req, res, next){
 
 //按照日期统计个人装机情况
 function getPersonInstallRecord(req, res, next){
-    var id = req.query.id;
-    var sql = "select FROM_UNIXTIME( install_date/1000, '%Y%m%d' ) 'days',count(id) 'count' " +
-    "from install_records where person_id = :id group by days ";
-    dbHelper.execSql(sql, {id:id}, function(err, result){
+    var code = req.query.code;
+    var sql = "select FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) 'days',count(a.id) 'count' " +
+    "from install_records a join channel_persons b on a.person_id = b.id where b.install_code = :code group by days ";
+    dbHelper.execSql(sql, {code:code}, function(err, result){
         if(err){
             return next(err);
         }
