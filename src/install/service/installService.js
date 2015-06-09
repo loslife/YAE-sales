@@ -185,11 +185,25 @@ function updatePerson(req, res, next){
 
 //推荐码入库
 function installRecord(req, res, next){
-    //判断此账号是否已推荐
+    //判断此请求是否已推荐
+    var sql = "select count(1) 'count' from install_records where 1 = 2 ";
+    var params = {};
     var username = req.body.username;
     var device_id = req.body.device_id;
-    var sql = "select count(1) 'count' from install_records where account = :account or device_id = :device_id";
-    dbHelper.execSql(sql, {account: username,device_id: device_id}, function(err, result){
+    var wx_open_id = req.body.wx_open_id;
+    if(username){
+        sql += "or account = :account ";
+        params.account = username;
+    }
+    if(device_id){
+        sql += "or device_id = :device_id ";
+        params.device_id = device_id;
+    }
+    if(wx_open_id){
+        sql += "or wx_open_id = :wx_open_id ";
+        params.wx_open_id = wx_open_id;
+    }
+    dbHelper.execSql(sql, params, function(err, result){
         if(err){
             return next(err);
         }
@@ -204,14 +218,15 @@ function installRecord(req, res, next){
                 return next(err);
             }
             if(result && result[0] && result[0].id){
-                var sql = "insert into install_records(id,person_id,device_id,account,install_date) " +
+                var sql = "insert into install_records(id,person_id,device_id,account,install_date,wx_open_id) " +
                     "values(:id,:person_id,:device_id,:account,:install_date)";
                 var param = {
                     id: uuid.v1(),
                     person_id: result[0].id,
                     account: username,
                     device_id: device_id,
-                    install_date: new Date().getTime()
+                    install_date: new Date().getTime(),
+                    wx_open_id:wx_open_id
                 };
                 dbHelper.execSql(sql, param, function(err){
                     if(err){
