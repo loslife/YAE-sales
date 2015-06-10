@@ -310,8 +310,9 @@ function postPins(req, res, next){
     var name = req.body.nickName;
     var area_id;
     var allSql = [];
-    var webName = [];
-    var webBaseurl = this.global._g_clusterConfig.baseurl + "/map";
+    var webSite = [];
+    var webBaseurl = this.global._g_clusterConfig.baseurl + "/map/";
+    var randomChar = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
     if(!areaPoints){
         doResponse(req, res, "empty");
@@ -319,7 +320,12 @@ function postPins(req, res, next){
     }
 
     _.each(name, function (item) {
-        webName.push(cnToPyin.getRegionsWeb(item));
+        var randomPin = "";
+
+        for(var i = 0; i < 6; i++) {
+            randomPin += randomChar[Math.ceil(Math.random() * 35)];
+        }
+        webSite.push(webBaseurl + cnToPyin.getRegionsWeb(item) + "/" + randomPin);
     });
 
     async.series([getAreaId, addRegions], function(err, result){
@@ -333,7 +339,7 @@ function postPins(req, res, next){
             return next(err);
         }
 
-        doResponse(req, res, "ok");
+        doResponse(req, res, webSite);
     });
 
     function getAreaId(callback){
@@ -380,7 +386,7 @@ function postPins(req, res, next){
                 var uid = uuid.v1();
                 uids.push(uid);
                 var date = new Date().getTime();
-                allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index}, null, true));
+                allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index, website: webSite[index]}, null, true));
                 index++;
             });
 

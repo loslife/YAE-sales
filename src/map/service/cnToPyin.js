@@ -17,7 +17,6 @@ function getRegionsWeb(names) {
         }
     }
 
-    console.log(regions);
     return regions;
 }
 //汉字匹配拼音
