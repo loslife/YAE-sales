@@ -386,7 +386,8 @@ function postPins(req, res, next){
                 var uid = uuid.v1();
                 uids.push(uid);
                 var date = new Date().getTime();
-                allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index, website: webSite[index]}, null, true));
+       //         allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index, website: webSite[index]}, null, true));
+                allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index}, null, true));
                 index++;
             });
 
