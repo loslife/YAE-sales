@@ -203,7 +203,6 @@ function installRecord(req, res, next){
         sql += "or wx_open_id = :wx_open_id ";
         params.wx_open_id = wx_open_id;
     }
-    console.log(sql);
     dbHelper.execSql(sql, params, function(err, result){
         if(err){
             return next(err);
@@ -213,21 +212,23 @@ function installRecord(req, res, next){
         }
         //推荐码入库
         var code = req.body.content;
+        var real_ip = req.body.real_ip;
         var sql = "select id from channel_persons where install_code = :code";
         dbHelper.execSql(sql, {code: code}, function(err, result){
             if(err){
                 return next(err);
             }
             if(result && result[0] && result[0].id){
-                var sql = "insert into install_records(id,person_id,device_id,account,install_date,wx_open_id) " +
-                    "values(:id,:person_id,:device_id,:account,:install_date,:wx_open_id)";
+                var sql = "insert into install_records(id,person_id,device_id,account,install_date,wx_open_id,real_ip) " +
+                    "values(:id,:person_id,:device_id,:account,:install_date,:wx_open_id,:real_ip)";
                 var param = {
                     id: uuid.v1(),
                     person_id: result[0].id,
                     account: username,
                     device_id: device_id,
                     install_date: new Date().getTime(),
-                    wx_open_id:wx_open_id
+                    wx_open_id:wx_open_id,
+                    real_ip: real_ip
                 };
                 dbHelper.execSql(sql, param, function(err){
                     if(err){
