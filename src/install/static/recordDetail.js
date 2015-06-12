@@ -47,6 +47,7 @@ app.controller('recordDetail', ['$rootScope', '$scope', '$http','$location','$st
     $scope.columnDefs = [
         {field: 'account', displayName: '手机号码'},
         {field: 'device_id', displayName: '设备id'},
+        {field: 'wx_open_id', displayName: '微信openId'},
         {field: 'real_ip', displayName: 'ip地址'},
         {field: 'install_date', displayName: '装机日期',cellTemplate:"<div>{{row.entity.install_date | date:'yyyy-MM-dd HH:mm:ss'}}</div>"}
     ];

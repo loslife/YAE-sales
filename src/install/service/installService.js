@@ -17,6 +17,7 @@ exports.getInstallRecordCount = getInstallRecordCount;
 exports.getPersonInstallRecord = getPersonInstallRecord;
 exports.getPersonById = getPersonById;
 exports.getChannelById = getChannelById;
+exports.editChannel = editChannel;
 
 //获取渠道列表
 function getAllChannel(req, res, next){
@@ -292,5 +293,18 @@ function getChannelById(req, res, next){
             return next(err);
         }
         doResponse(req, res, result[0]);
+    });
+}
+
+//修改渠道
+function editChannel(req, res, next){
+    var name = req.body.name;
+    var id = req.body.id;
+    var sql = "update channels set name = :name where id = :id";
+    dbHelper.execSql(sql, {name: name,id: id}, function(err){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, {message: "ok"});
     });
 }

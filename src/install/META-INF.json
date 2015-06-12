@@ -122,6 +122,13 @@
             "auth": false,
             "impl": "installService.getChannelById",
             "comment": "根据id获取渠道信息"
+        },{
+            "name": "editChannel",
+            "path": "/install/editChannel",
+            "method": "post",
+            "auth": false,
+            "impl": "installService.editChannel",
+            "comment": "修改渠道"
         }
     ],
     "statics": [

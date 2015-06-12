@@ -40,7 +40,8 @@ app.controller('SalesChannelCtrl', ['$rootScope', '$scope', '$http','$location',
         }
     }, true);
 
-    var operation = '<span class="label bg-success" style="color:#fff;background-color: rgb(240, 80, 80);" data-toggle="modal" data-target="#deleteChannel" ng-click="setDeleteChannel(row.entity)">删除</span>';
+    var operation = '<span class="label bg-success" style="color:#fff;background-color: #19a9d5;" data-toggle="modal" data-target="#editChannel" ng-click="setEditChannel(row.entity)">修改</span>';
+    operation += '&nbsp;&nbsp;<span class="label bg-success" style="color:#fff;background-color: rgb(240, 80, 80);" data-toggle="modal" data-target="#deleteChannel" ng-click="setDeleteChannel(row.entity)">删除</span>';
 
     $scope.columnDefs = [
         {field: 'name', displayName: '渠道名称'},
@@ -79,12 +80,30 @@ app.controller('SalesChannelCtrl', ['$rootScope', '$scope', '$http','$location',
     $scope.setDeleteChannel = function (data) {
         $scope.channel = data;
     };
-    //删除标签
+    //点击修改按钮弹出提示框
+    $scope.setEditChannel = function (data) {
+        $scope.channel = data;
+    };
+    $scope.cancelSetEditChannel = function(){
+        $scope.channel = null;
+    };
+    //删除渠道
     $scope.deleteChannel = function () {
         var url = "/sales/install/deleteChannel?id=" +$scope.channel.id;
         $http.post(url).success(function (data) {
             $scope.myData = _.filter($scope.myData, function(item){
                 return item.id != $scope.channel.id;
+            });
+        });
+    }
+    $scope.editChannel = function(){
+        var url = "/sales/install/editChannel";
+        $http.post(url, $scope.channel).success(function (data) {
+            $scope.myData = _.map($scope.myData, function(item){
+                if(item.id == $scope.channel.id){
+                    item = $scope.channel;
+                }
+                return item;
             });
         });
     }
