@@ -56,15 +56,25 @@
                         </div>
                     </div>
                     <div class="wrapper-md">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label text-center" style="line-height: 32px;">渠道名称</label>
-                        <div class="col-sm-6">
-                            <select ng-model="formData.channelId" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
-                                <option value="{{channel.id}}" ng-repeat="channel in channels">{{channel.name}}</option>
-                            </select>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-center" style="line-height: 32px;">渠道名称</label>
+                            <div class="col-sm-6">
+                                <select ng-model="formData.channelId" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
+                                    <option value="{{channel.id}}" ng-repeat="channel in channels">{{channel.name}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                    <div class="wrapper-md">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-center" style="line-height: 32px;">上线名称</label>
+                            <div class="col-sm-6">
+                                <select ng-model="formData.parentId" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
+                                    <option value="{{parent.id}}" ng-repeat="parent in parents_list">{{parent.name}}</option>
+                                </select>
+                            </div>
                         </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelSetAddPerson()">取消</button>

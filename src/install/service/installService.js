@@ -18,6 +18,7 @@ exports.getPersonInstallRecord = getPersonInstallRecord;
 exports.getPersonById = getPersonById;
 exports.getChannelById = getChannelById;
 exports.editChannel = editChannel;
+exports.getAllParent = getAllParent;
 
 //获取渠道列表
 function getAllChannel(req, res, next){
@@ -75,15 +76,33 @@ function getPersonByChannelId(req, res, next){
     var pageSize = parseInt(req.query.pageSize) || 10;
     var currentPage = parseInt(req.query.currentPage) || 1;
     var startIndex = (currentPage - 1) * pageSize;
-    var sql = "select a.id 'id',a.channel_id 'channel_id',a.name 'name',a.install_code 'install_code',count(b.person_id) 'count' " +
+    var sql = "select a.id 'id',c.name 'parent',a.channel_id 'channel_id',a.name 'name',a.install_code 'install_code'," +
+        "count(b.person_id) 'all',count(b.wx_open_id) 'weixin' " +
         "from channel_persons a left join install_records b on a.id = b.person_id " +
+        "left join channel_persons c on a.parent_id = c.id " +
         "where a.channel_id = :channel_id " +
         "group by a.id limit :startIndex,:pageSize";
     dbHelper.execSql(sql, {channel_id: channel_id,startIndex: startIndex,pageSize: pageSize}, function(err, result){
         if(err){
             return next(err);
         }
-        doResponse(req, res, result);
+        async.each(result, function(item, callback){
+            var sql = "select count(1) 'count' from install_records where person_id = :id and wx_open_id is null";
+            dbHelper.execSql(sql, {id: item.id}, function(err, count_result){
+                if(err){
+                    return callback(err);
+                }
+                if(count_result && count_result[0]) {
+                    item.app = count_result[0].count;
+                }
+                callback();
+            });
+        }, function(err){
+            if(err){
+                return next(err);
+            }
+            doResponse(req, res, result);
+        });
     });
 }
 
@@ -143,12 +162,13 @@ function addPerson(req, res, next){
     var id = uuid.v1();
     var channel_id = req.body.channelId;
     var name = req.body.name;
+    var parent_id = req.body.parentId;
     getInstallCode(function(err, code){
         if(err){
             return next(err);
         }
-        var sql = "insert into channel_persons(id,channel_id,name,install_code) values(:id,:channel_id,:name,:install_code)";
-        dbHelper.execSql(sql, {id: id,channel_id: channel_id,name: name,install_code: code}, function(err){
+        var sql = "insert into channel_persons(id,channel_id,name,install_code,parent_id) values(:id,:channel_id,:name,:install_code,:parent_id)";
+        dbHelper.execSql(sql, {id: id,channel_id: channel_id,name: name,install_code: code,parent_id: parent_id}, function(err){
             if(err){
                 return next(err);
             }
@@ -306,5 +326,16 @@ function editChannel(req, res, next){
             return next(err);
         }
         doResponse(req, res, {message: "ok"});
+    });
+}
+
+//获取所有一级专员
+function getAllParent(req, res, next){
+    var sql = "select * from channel_persons where parent_id is null";
+    dbHelper.execSql(sql, {}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, result);
     });
 }

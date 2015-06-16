@@ -2,30 +2,29 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
 
     $scope.colors = ['primary', 'info', 'success', 'warning', 'danger', 'dark'];
 
-    setTimeout(init,10);
-    function init(){
-        $scope.initChannel();
-    }
-
-    var channelListUrl = "/sales/install/getAllChannel";
-    $scope.initChannel = function(callback){
+    $scope.initChannel = function(){
+        var channelListUrl = "/sales/install/getAllChannel";
         $http.get(channelListUrl).success(function (data){
-            if(data.code!=0){
-                if(callback){
-                    callback(null);
-                }
-                return;
+            if (data.code != 0) {
+                return alert("系统错误，请联系管理员");
             }
             $scope.channels = data.result;
             angular.forEach($scope.channels, function(channel){
                 channel.color = $scope.colors[Math.floor((Math.random()*6))];
             });
             $scope.selectChannel($scope.channels[0]);
-            if(callback){
-                callback(null);
-            }
         });
     };
+
+    $scope.initParent = function(){
+        var parentUrl = "/sales/install/getAllParent";
+        $http.get(parentUrl).success(function (data){
+            if (data.code != 0) {
+                return alert("系统错误，请联系管理员");
+            }
+            $scope.parents = data.result;
+        });
+    }
 
     $scope.selectChannel = function(channel){
         angular.forEach($scope.channels, function(channel) {
@@ -89,8 +88,11 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
 
     $scope.columnDefs = [
         {field: 'name', displayName: '名称'},
-        {field: 'install_code', displayName: '推荐码'},
-        {field: 'count', displayName: '装机数'},
+        {field: 'parent', displayName: '上线'},
+        {field: 'install_code', displayName: '推荐码',width:'120px'},
+        {field: 'all', displayName: '装机数',width:'80px'},
+        {field: 'app', displayName: 'app',width:'80px'},
+        {field: 'weixin', displayName: '微站',width:'80px'},
         {field: '', displayName: '操作', cellTemplate: operation}
     ];
     $scope.gridOptions = {
@@ -209,4 +211,21 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
         return rs;
     }
 
+    (function init(){
+        $scope.initChannel();
+        $scope.initParent();
+        $scope.formData = {};
+    })();
+
+    $scope.$watch('formData.channelId', function(newVal, oldVal){
+        if(newVal != oldVal){
+            $scope.parents_list = [];
+            _.each($scope.parents, function(item){
+                if(item.channel_id == newVal){
+                    $scope.parents_list.push(item);
+                }
+            });
+            $scope.parents_list.push(null);
+        }
+    });
 }]);

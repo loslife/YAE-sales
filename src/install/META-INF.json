@@ -129,6 +129,13 @@
             "auth": false,
             "impl": "installService.editChannel",
             "comment": "修改渠道"
+        },{
+            "name": "getAllParent",
+            "path": "/install/getAllParent",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getAllParent",
+            "comment": "获取所有一级专员"
         }
     ],
     "statics": [
