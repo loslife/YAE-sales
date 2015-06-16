@@ -136,6 +136,13 @@
             "auth": false,
             "impl": "installService.getAllParent",
             "comment": "获取所有一级专员"
+        },{
+            "name": "recentInstallRecord",
+            "path": "/install/recentInstallRecord",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.recentInstallRecord",
+            "comment": "一周装机情况"
         }
     ],
     "statics": [

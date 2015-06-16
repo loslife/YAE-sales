@@ -84,11 +84,12 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
     var operation = '<span class="label bg-success" data-toggle="modal" data-target="#updata-person" ng-click="setUpdatePerson(row.entity)">编辑</span>' +
         ' <span class="label bg-danger" data-toggle="modal" data-target="#delete-person" ng-click="setDeletePerson(row.entity)">删除</span>' +
         ' <span class="label bg-info" ng-click="goRecordDetail(row.entity)">详细</span>' +
+        ' <span class="label bg-info" ng-click="goRecentDetail(row.entity)">一周详情</span>' +
         ' <span class="label bg-danger" data-toggle="modal" data-target="#showUrl" ng-click="setPersonUrl(row.entity.install_code)">获取url</span>';
 
     $scope.columnDefs = [
-        {field: 'name', displayName: '名称'},
-        {field: 'parent', displayName: '上线'},
+        {field: 'name', displayName: '名称',width:'200px'},
+        {field: 'parent', displayName: '上线',width:'200px'},
         {field: 'install_code', displayName: '推荐码',width:'120px'},
         {field: 'all', displayName: '装机数',width:'80px'},
         {field: 'app', displayName: 'app',width:'80px'},
@@ -187,6 +188,12 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
 
     $scope.goRecordDetail = function(data){
         $state.go('app.recordDetail', {
+            id: data.id
+        });
+    }
+
+    $scope.goRecentDetail = function(data){
+        $state.go('app.recentDetail', {
             id: data.id
         });
     }
