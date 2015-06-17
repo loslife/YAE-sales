@@ -174,6 +174,7 @@ var app = angular.module('app', [
                 }).state('app.recentDetail', {
                     url: '/recentDetail?id',
                     templateUrl: '/install/recentDetail.html',
+                    params: {'id': null,'data': null},
                     resolve: {
                         deps: ['uiLoad','$ocLazyLoad',
                             function (uiLoad,$ocLazyLoad) {

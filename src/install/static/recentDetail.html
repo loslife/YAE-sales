@@ -5,7 +5,7 @@
      app.settings.container = false;
      app.hideAside = false;
      app.hideFooter = true"
-     ng-controller="FlotChartCtrl">
+     ng-controller="RecentChartCtrl">
 
     <div class="panel b-a">
         <div class="panel-heading b-b b-light">
@@ -14,27 +14,31 @@
             </button>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading font-bold">一周详情</div>
-            <div class="panel-body">
-                <div ui-jq="plot" ui-options="
-              [
-                { data: {{data}}, points: { show: true, radius: 6}, splines: { show: true, tension: 0.25, lineWidth: 5, fill: 0 } }
-              ],
-              {
-                colors: ['{{app.color.info}}'],
-                series: { shadowSize: 3 },
-                xaxis:{
-                  font: { color: '#ccc' },
-                  position: 'bottom',
-                },
-                yaxis:{ font: { color: '#ccc' } },
-                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
-                tooltip: true,
-                tooltipOpts: { content: '装机数 %y',  defaultTheme: false, shifts: { x: 0, y: 20 } }
-              }
-            " style="height:240px" >
+    <div class="wrapper-md">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading font-bold">一周详情</div>
+                    <div class="panel-body">
+                        <div ui-jq="plot" ui-options="
+                      [
+                        { data: {{myData}}, points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 5, fill: 0 } }
+                      ],
+                      {
+                        colors: ['{{app.color.info}}'],
+                        series: { shadowSize: 3 },
+                        xaxis:{
+                          font: { color: '#ccc' },
+                          position: 'bottom',
+                        },
+                        yaxis:{ font: { color: '#ccc' } },
+                        grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                        tooltip: true,
+                        tooltipOpts: { content: '装机数 %y.0',  defaultTheme: false, shifts: { x: 0, y: 20 } }
+                      }
+                    " style="height:240px" >
+                    </div>
+                </div>
             </div>
         </div>
     </div>

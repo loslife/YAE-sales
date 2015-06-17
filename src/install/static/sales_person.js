@@ -193,8 +193,21 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
     }
 
     $scope.goRecentDetail = function(data){
-        $state.go('app.recentDetail', {
-            id: data.id
+        var chartData = [];
+        var id = data.id;
+        var url = "/sales/install/recentInstallRecord?id=" + id;
+        $http.get(url).success(function (data) {
+            if(data.result){
+                var result = data.result;
+                for(var i=0;i<result.length;i++){
+                    var a = [result[i].days, result[i].count];
+                    chartData.push(a);
+                }
+            }
+            $state.go('app.recentDetail', {
+                id: id,
+                data: chartData
+            });
         });
     }
 
