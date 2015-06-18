@@ -143,6 +143,13 @@
             "auth": false,
             "impl": "installService.recentInstallRecord",
             "comment": "一周装机情况"
+        },{
+            "name": "getChannelRecentRecord",
+            "path": "/install/getChannelRecentRecord",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getChannelRecentRecord",
+            "comment": "渠道一周装机情况"
         }
     ],
     "statics": [

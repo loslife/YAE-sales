@@ -20,6 +20,7 @@ exports.getChannelById = getChannelById;
 exports.editChannel = editChannel;
 exports.getAllParent = getAllParent;
 exports.recentInstallRecord = recentInstallRecord;
+exports.getChannelRecentRecord = getChannelRecentRecord;
 
 //获取渠道列表
 function getAllChannel(req, res, next){
@@ -352,6 +353,38 @@ function recentInstallRecord(req, res, next){
         var now = result[0].now;
         var sql = "select FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) 'days',count(a.id) 'count' " +
             "from install_records a where person_id = :id and FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) between :begin and :end group by days";
+        dbHelper.execSql(sql, {id: id,begin: now-6,end: now}, function(err, result){
+            if(err){
+                return next(err);
+            }
+            var rs = [];
+            for(var i=now-6; i<=now; i++){
+                var r = _.find(result, function(item){
+                    return item.days == i;
+                });
+                if(r){
+                    rs.push(r);
+                }else{
+                    rs.push({days: i,count: 0});
+                }
+            }
+            doResponse(req, res, rs);
+        });
+    });
+}
+
+//渠道一周装机情况
+function getChannelRecentRecord(req, res, next){
+
+    var id = req.query.channel_id;
+    var sql = "select DATE_FORMAT(now()+0, '%Y%m%d') 'now' from dual";
+    dbHelper.execSql(sql, {}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        var now = result[0].now;
+        var sql = "select FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) 'days',count(a.id) 'count' " +
+            "from channel_persons b left join install_records a on b.id = a.person_id where b.channel_id = :id and FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) between :begin and :end group by days";
         dbHelper.execSql(sql, {id: id,begin: now-6,end: now}, function(err, result){
             if(err){
                 return next(err);
