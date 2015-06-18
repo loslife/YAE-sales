@@ -1,4 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm bg-light" ng-init="app.settings.asideFixed = true;app.settings.asideDock = false;app.settings.container = false;app.hideAside = false;app.hideFooter = true" ng-controller="TopicListCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm bg-light" ng-init="app.settings.asideFixed = true;app.settings.asideDock = false;app.settings.container = false;app.hideAside = false;app.hideFooter = true" ng-controller="SalesPersonCtrl">
     <!--系列列表-->
     <div class="col w-lg lt b-r">
         <div class="vbox">
@@ -25,6 +25,7 @@
         <div class="panel-heading b-b b-light">操作</div>
         <div class="panel-body">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-person">添加专员</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#showUrl" ng-click="setChannelUrl()">获取渠道url</button>
         </div>
     </div>
     <!--主题列表区-->
@@ -55,15 +56,25 @@
                         </div>
                     </div>
                     <div class="wrapper-md">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label text-center" style="line-height: 32px;">渠道名称</label>
-                        <div class="col-sm-6">
-                            <select ng-model="formData.channelId" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
-                                <option value="{{channel.id}}" ng-repeat="channel in channels">{{channel.name}}</option>
-                            </select>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-center" style="line-height: 32px;">上线名称</label>
+                            <div class="col-sm-6">
+                                <select ng-model="formData.parentId" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
+                                    <option value="{{parent.id}}" ng-repeat="parent in parents_list">{{parent.name}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                    <div class="wrapper-md">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-center" style="line-height: 32px;">渠道名称</label>
+                            <div class="col-sm-6">
+                                <select ng-model="formData.channelId" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
+                                    <option value="{{channel.id}}" ng-repeat="channel in channels">{{channel.name}}</option>
+                                </select>
+                            </div>
                         </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelSetAddPerson()">取消</button>
@@ -72,7 +83,7 @@
             </div>
         </div>
     </div>
-    <!-- 更新主题确认模态框框 -->
+    <!-- 更新模态框 -->
     <div class="modal fade bs-example-modal-lg"  id="updata-person">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -121,6 +132,24 @@
                 <div class="modal-footer"style="border: none;">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary"  data-dismiss="modal" ng-click="deletePerson()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 获取url弹窗 -->
+    <div class="modal fade bs-example-modal-lg delete-topic" id="showUrl" role="dialog" aria-hidden="false">
+        <div class="modal-dialog" style="margin-top: 200px;">
+            <div class="modal-content">
+                <div class="panel panel-default" style="margin-bottom: 0px;border: none;">
+                    <div class="panel-heading">url</div>
+                    <div class="row wrapper">
+                        <div class="form-group">
+                            <div>{{url}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"style="border: none;">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
                 </div>
             </div>
         </div>

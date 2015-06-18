@@ -1,0 +1,29 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm bg-light"
+     ng-init="
+     app.settings.asideFixed = true;
+     app.settings.asideDock = false;
+     app.settings.container = false;
+     app.hideAside = false;
+     app.hideFooter = true"
+     ng-controller="recordDetail">
+
+    <div class="panel b-a">
+        <div class="panel-heading b-b b-light">
+            <button type="button" id="myButton" class="btn btn-primary" autocomplete="off" ng-click="goBackSalesperson()">
+                返回上级
+            </button>
+        </div>
+    </div>
+    <div class="wrapper-md">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                装机情况
+            </div>
+            <div class="table-responsive">
+                <div ng-grid="gridOptions" style="min-height:510px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -9,7 +9,8 @@
     "install":{
         "sales_title":"渠道管理",
             "sales_channel":"渠道管理",
-            "sales_person":"专员管理"
+            "sales_person":"专员管理",
+            "sales_recent":"推广情况"
     },
     "qrcode":{
         "title":"活动管理",
