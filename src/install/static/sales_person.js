@@ -139,12 +139,15 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
             if (data.code != 0) {
                 return alert("系统错误，请联系管理员");
             }
+            /*
             if ($scope.selectedChannel.id == data.result.channel_id) {
                 $scope.myData.push(data.result);
             }
-            $scope.formData = null;
-            $scope.initParent();
+            */
             $("#add-person").modal('hide');
+            $scope.formData = null;
+            $scope.getPagedDataAsync();
+            $scope.initParent();
         });
     };
     $scope.cancelSetAddPerson = function(){
