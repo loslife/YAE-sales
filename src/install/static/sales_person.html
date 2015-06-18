@@ -60,7 +60,7 @@
                             <label class="col-sm-2 control-label text-center" style="line-height: 32px;">上线名称</label>
                             <div class="col-sm-6">
                                 <select ng-model="formData.parentId" class="form-control ng-pristine ng-animate ng-valid ng-valid-required">
-                                    <option value="{{person.id}}" ng-repeat="parent in parents">{{person.name}}</option>
+                                    <option value="{{parent.id}}" ng-repeat="parent in parents_list">{{parent.name}}</option>
                                 </select>
                             </div>
                         </div>

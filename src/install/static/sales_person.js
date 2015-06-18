@@ -143,6 +143,7 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
                 $scope.myData.push(data.result);
             }
             $scope.formData = null;
+            $scope.initParent();
             $("#add-person").modal('hide');
         });
     };
@@ -245,7 +246,7 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
                     $scope.parents_list.push(item);
                 }
             });
-            $scope.parents_list.push(null);
+            //$scope.parents_list.push({id: undefined,name: ""});
         }
     });
 }]);
