@@ -94,7 +94,7 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
         {field: 'all', displayName: '装机数',width:'80px'},
         {field: 'app', displayName: 'app',width:'80px'},
         {field: 'weixin', displayName: '微站',width:'80px'},
-        {field: '', displayName: '操作', cellTemplate: operation}
+        {field: '', displayName: '操作', width: '300px', cellTemplate: operation}
     ];
     $scope.gridOptions = {
         data: 'myData',
