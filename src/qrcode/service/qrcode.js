@@ -158,7 +158,7 @@ function addEntities(req, res, next){
             break;
         default :
             var qrcode_url = req.body.qrcodeUrl;
-            var redirect_url = "http://115.29.248.236:9393/sales/activity/redirect?entity_id=" + id + "&redirectUrl=" + qrcode_url;
+            var redirect_url = "http://sales.naildaka.com/sales/activity/redirect?entity_id=" + id + "&redirectUrl=" + qrcode_url;
             var qr_png = qr.image(redirect_url, {type: 'png', margin: 2});
             qr_png.pipe(fs.createWriteStream(path.join(__dirname,'qrcode.png')));
             qr_png.on("end", function(){
