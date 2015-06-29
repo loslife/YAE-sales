@@ -46,12 +46,26 @@
             "impl": "installService.getPersonByChannelId",
             "comment": "根据渠道id查询专员"
         },{
+            "name": "getPersonByChannelIdWithoutLimit",
+            "path": "/install/getPersonByChannelIdWithoutLimit",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getPersonByChannelIdWithoutLimit",
+            "comment": "根据渠道id查询专员无分页"
+        },{
             "name": "getCountChannel",
             "path": "/install/getCountPersonByChannelId",
             "method": "get",
             "auth": false,
             "impl": "installService.getCountPersonByChannelId",
             "comment": "根据渠道id统计专员数量"
+        },{
+            "name": "getPersonById",
+            "path": "/install/getPersonById",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getPersonById",
+            "comment": "根据id查询专员"
         },{
             "name": "deletePerson",
             "path": "/install/deletePerson",
@@ -80,6 +94,69 @@
             "auth": false,
             "impl": "installService.installRecord",
             "comment": "推荐码入库"
+        },{
+            "name": "getInstallRecord",
+            "path": "/install/getInstallRecord",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getInstallRecord",
+            "comment": "根据id获取推荐码入库情况"
+        },{
+            "name": "getInstallRecordCount",
+            "path": "/install/getInstallRecordCount",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getInstallRecordCount",
+            "comment": "根据id获取推荐码入库总数"
+        },{
+            "name": "getPersonInstallRecord",
+            "path": "/install/getPersonInstallRecord",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getPersonInstallRecord",
+            "comment": "按照日期统计个人装机情况"
+        },{
+            "name": "getChannelById",
+            "path": "/install/getChannelById",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getChannelById",
+            "comment": "根据id获取渠道信息"
+        },{
+            "name": "editChannel",
+            "path": "/install/editChannel",
+            "method": "post",
+            "auth": false,
+            "impl": "installService.editChannel",
+            "comment": "修改渠道"
+        },{
+            "name": "getAllParent",
+            "path": "/install/getAllParent",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getAllParent",
+            "comment": "获取所有一级专员"
+        },{
+            "name": "recentInstallRecord",
+            "path": "/install/recentInstallRecord",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.recentInstallRecord",
+            "comment": "专员一周装机情况"
+        },{
+            "name": "getChannelRecentRecord",
+            "path": "/install/getChannelRecentRecord",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getChannelRecentRecord",
+            "comment": "渠道一周装机情况"
+        },{
+            "name": "getRecentRecord",
+            "path": "/install/getRecentRecord",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getRecentRecord",
+            "comment": "整体一周装机情况"
         }
     ],
     "statics": [

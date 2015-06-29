@@ -3,6 +3,7 @@ var async = require("async");
 var uuid = require('node-uuid');
 var _ = require("underscore");
 var sqlHelper = require(FRAMEWORKPATH + "/db/sqlHelper");
+var cnToPyin = require("./cnToPyin.js");
 
 exports.showArea = showArea;
 exports.showRegion = showRegion;
@@ -16,13 +17,17 @@ var areaRegionsPoints = [];
 var areaRegionName = [];
 
 function showArea(req, res, next){
-
+    var areaDefault;
+    var isExist = "NO";
     area = req.params["area"];
 
-    async.series([getArea, getStores, getAreaRegions, getAreaRegionPoints], function(err){
-        if(err === "empty"){
+    async.series([getArea, checkAreaExist, getStores, getAreaRegions, getAreaRegionPoints], function(err){
+        if(err === "addArea"){
             area = "nanjing";
-            res.render("area", {layout: false, area: "南京", level: 13,store: [], regionPoints: [], regionName: []});
+            res.render("area", {layout: false, area: data.center, level: data.level ,store: store, regionPoints: areaRegionsPoints, regionName: areaRegionName, isExist: isExist});
+            areaRegionsPoints = [];
+            areaRegionName = [];
+            areaDefault = "";
             return ;
         }
 
@@ -30,7 +35,7 @@ function showArea(req, res, next){
             return;
         }
 
-        res.render("area", {layout: false, area: data.center, level: data.level,store: store, regionPoints: areaRegionsPoints, regionName: areaRegionName});
+        res.render("area", {layout: false, area: data.center, level: data.level,store: store, regionPoints: areaRegionsPoints, regionName: areaRegionName, isExist: isExist});
         areaRegionsPoints = [];
         areaRegionName = [];
     });
@@ -46,12 +51,74 @@ function showArea(req, res, next){
 
             data = result[0];
             if(!data){
-                callback("empty");
+                areaDefault = "nanjing";
+                callback(null);
                 return ;
             }
+
+            isExist = "YES";
             callback(null);
             return ;
         });
+    }
+
+    function checkAreaExist(callback) {
+        if(areaDefault != "nanjing") {
+            callback(null);
+            return ;
+        }
+
+        async.series([getDefault, setDefault], function(error, result) {
+            if(error) {
+                if(error === "defaultExist") {
+                    callback(null);
+                } else {
+                    callback(error);
+                }
+
+                return ;
+            }
+
+            callback("addArea");
+            return ;
+        });
+
+        function getDefault(callback) {
+            var sql = "select * from areas where name = :name;";
+
+            dbHelper.execSql(sql, {name: areaDefault}, function (error, result) {
+                if(error) {
+                    callback(error);
+                    return;
+                }
+
+                if(result[0]) {
+                    data = result[0];
+                    area = "nanjing";
+                    callback("defaultExist");
+                    return ;
+                }
+
+                callback(null);
+                return ;
+            });
+        }
+
+        function setDefault (callback) {
+            var sql = "insert into areas (id, name, center, level) values (:id, :name, :center, :level);";
+            var uid = uuid.v1();
+
+            dbHelper.execSql(sql, {id: uid, name: "nanjing", center: "南京", level: 13}, function(error, result) {
+                if(error) {
+                    callback(error);
+                    return ;
+                }
+
+                data = {id: uid, name: "nanjing", center: "南京", level: 13};
+                callback(null);
+                return ;
+            });
+        }
     }
 
     function getStores(callback){
@@ -118,20 +185,17 @@ function showRegion(req, res, next){
     var regionStores = [];
     var regionsCircle = [];
     var regionsPoints = [];
+    var areaDefault;
 
-    async.series([getArea, getStores, getAreaRegions, getAreaRegionPoints], function(err, result){
-        if(err === "empty"){
-            area = "nanjing";
-            res.render("region", {layout: false, area: "南京", level: 13,store: [], regionPoints: []});
-            return ;
-        }
-
+    async.series([getArea, getDefaultArea, getStores, getAreaRegions, getAreaRegionPoints], function(err, result){
         if(err){
+            res.render("region", {layout: false, area: "南京", level: 13,store: [], regionPoints: []});
             return;
         }
 
         res.render("region", {layout: false, area: regionData.center, level: regionData.level,store: regionStores, regionPoints: regionsPoints});
         regionsPoints = [];
+        regionStores = [];
     });
 
     function getArea(callback){
@@ -145,9 +209,36 @@ function showRegion(req, res, next){
 
             regionData = result[0];
             if(!regionData){
-                callback("empty");
+                areaDefault = "nanjing";
+                region = "nanjing";
+                callback(null);
                 return ;
             }
+            callback(null);
+            return ;
+        });
+    }
+
+    function getDefaultArea(callback) {
+        if(areaDefault != "nanjing") {
+            callback(null);
+            return ;
+        }
+
+        var sql = "select * from areas where name = :name;";
+
+        dbHelper.execSql(sql, {name: areaDefault}, function(error, result){
+            if(error){
+                callback(error);
+                return ;
+            }
+
+            regionData = result[0];
+            if(!regionData){
+                callback(error);
+                return ;
+            }
+
             callback(null);
             return ;
         });
@@ -172,6 +263,11 @@ function showRegion(req, res, next){
 
         dbHelper.execSql(sql, {area_id: regionData.id, name: region}, function(error, result){
             if(error){
+                callback(error);
+                return ;
+            }
+
+            if(!result[0]) {
                 callback(error);
                 return ;
             }
@@ -214,18 +310,36 @@ function postPins(req, res, next){
     var name = req.body.nickName;
     var area_id;
     var allSql = [];
+    var webSite = [];
+    var webBaseurl = this.global._g_clusterConfig.baseurl + "/map/";
+    var randomChar = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
     if(!areaPoints){
+        doResponse(req, res, "empty");
         return ;
     }
 
+    _.each(name, function (item) {
+        var randomPin = "";
+
+        for(var i = 0; i < 6; i++) {
+            randomPin += randomChar[Math.ceil(Math.random() * 35)];
+        }
+        webSite.push(webBaseurl + cnToPyin.getRegionsWeb(item) + "/" + randomPin);
+    });
+
     async.series([getAreaId, addRegions], function(err, result){
+        if(err === "empty"){
+            doResponse(req, res, "empty");
+            return ;
+        }
+
         if(err){
             console.log(err);
             return next(err);
         }
 
-        doResponse(req, res, "ok");
+        doResponse(req, res, webSite);
     });
 
     function getAreaId(callback){
@@ -242,7 +356,12 @@ function postPins(req, res, next){
                 return ;
             }
 
+            if(!result[0]){
+                callback("empty");
+                return ;
+            }
             area_id = result[0].id;
+
             callback(null);
             return ;
         });
@@ -267,6 +386,7 @@ function postPins(req, res, next){
                 var uid = uuid.v1();
                 uids.push(uid);
                 var date = new Date().getTime();
+       //         allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index, website: webSite[index]}, null, true));
                 allSql.push(sqlHelper.getServerInsertForMysql("", "regions", {id: uid, area_id: area_id, name: regions, create_date: date + index}, null, true));
                 index++;
             });
