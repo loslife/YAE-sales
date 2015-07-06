@@ -18,6 +18,13 @@
             "impl": "installService.getAllChannel",
             "comment": "获取渠道列表"
         },{
+            "name": "getAllChannelUnlimited",
+            "path": "/install/getAllChannelUnlimited",
+            "method": "get",
+            "auth": false,
+            "impl": "installService.getAllChannelUnlimited",
+            "comment": "获取渠道列表无分页"
+        },{
             "name": "getCountChannel",
             "path": "/install/getCountChannel",
             "method": "get",

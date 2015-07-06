@@ -3,7 +3,7 @@ app.controller('SalesPersonCtrl', ['$rootScope', '$scope', '$http','$location','
     $scope.colors = ['primary', 'info', 'success', 'warning', 'danger', 'dark'];
 
     $scope.initChannel = function(){
-        var channelListUrl = "/sales/install/getAllChannel";
+        var channelListUrl = "/sales/install/getAllChannelUnlimited";
         $http.get(channelListUrl).success(function (data){
             if (data.code != 0) {
                 return alert("系统错误，请联系管理员");

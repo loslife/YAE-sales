@@ -2,6 +2,7 @@ var dbHelper = require(FRAMEWORKPATH + "/utils/dbHelper");
 var uuid = require('node-uuid');
 
 exports.getAllChannel = getAllChannel;
+exports.getAllChannelUnlimited = getAllChannelUnlimited;
 exports.addChannel = addChannel;
 exports.deleteChannel = deleteChannel;
 exports.getCountChannel = getCountChannel;
@@ -30,6 +31,17 @@ function getAllChannel(req, res, next){
     var startIndex = (currentPage - 1) * pageSize;
     var sql = "select * from channels limit :startIndex,:pageSize";
     dbHelper.execSql(sql, {startIndex: startIndex,pageSize: pageSize}, function(err, result){
+        if(err){
+            return next(err);
+        }
+        doResponse(req, res, result);
+    });
+}
+
+//获取渠道列表
+function getAllChannelUnlimited(req, res, next){
+    var sql = "select * from channels";
+    dbHelper.execSql(sql, {}, function(err, result){
         if(err){
             return next(err);
         }
