@@ -421,30 +421,55 @@ function getChannelRecentRecord(req, res, next){
 //渠道一周装机情况
 function getRecentRecord(req, res, next){
 
-    var sql = "select DATE_FORMAT(now()+0, '%Y%m%d') 'now' from dual";
-    dbHelper.execSql(sql, {}, function(err, result){
+    var rs_date,rs_record;
+    async.series([_queryDate, _queryRecord], function(err, result){
         if(err){
             return next(err);
         }
-        var now = result[0].now;
-        var sql = "select FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) 'days',count(a.id) 'count' " +
-            "from install_records a where FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) between :begin and :end group by days";
-        dbHelper.execSql(sql, {begin: now-6,end: now}, function(err, result){
-            if(err){
-                return next(err);
+        console.log(rs_record);
+        var rs = [];
+        for(var i=1; i<8; i++){
+            var date = rs_date[i];
+            var r = _.find(rs_record, function(item){
+                return item.days == date;
+            });
+            if(r){
+                rs.push(r);
+            }else{
+                rs.push({days: date,count: 0});
             }
-            var rs = [];
-            for(var i=now-6; i<=now; i++){
-                var r = _.find(result, function(item){
-                    return item.days == i;
-                });
-                if(r){
-                    rs.push(r);
-                }else{
-                    rs.push({days: i,count: 0});
-                }
-            }
-            doResponse(req, res, rs);
-        });
+        }
+        doResponse(req, res, rs);
     });
+
+    function _queryDate(nextStep){
+        var sql = "select date_format(date_add(now(), interval -6 day), '%Y%m%d') '1'," +
+            "date_format(date_add(now(), interval -5 day), '%Y%m%d') '2'," +
+            "date_format(date_add(now(), interval -4 day), '%Y%m%d') '3'," +
+            "date_format(date_add(now(), interval -3 day), '%Y%m%d') '4'," +
+            "date_format(date_add(now(), interval -2 day), '%Y%m%d') '5'," +
+            "date_format(date_add(now(), interval -1 day), '%Y%m%d') '6'," +
+            "date_format(now(), '%Y%m%d') '7' from dual";
+        dbHelper.execSql(sql, {}, function(err, result){
+            if(err){
+                return nextStep(err);
+            }
+            rs_date = result[0];
+            nextStep();
+        });
+    }
+    function _queryRecord(nextStep){
+        var sql = "select FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) 'days',count(a.id) 'count' " +
+            "from install_records a " +
+            "where FROM_UNIXTIME( a.install_date/1000, '%Y%m%d' ) " +
+            "between date_format(date_add(now(), interval -6 day), '%Y%m%d') " +
+            "and date_format(now(), '%Y%m%d') group by days";
+        dbHelper.execSql(sql, {}, function(err, result){
+            if(err){
+                return nextStep(err);
+            }
+            rs_record = result;
+            nextStep();
+        });
+    }
 }
