@@ -1,0 +1,43 @@
+{
+  "interface": {
+    "services": {
+    },
+    "sdk": {
+    },
+    "url": {
+    },
+    "fragment": {
+    }
+  },
+  "services": [
+    {
+      "name": "sales_signin",
+      "path": "/signin",
+      "method": "post",
+      "auth": false,
+      "impl": "user.signin",
+      "comment": "用户登录"
+    },{
+      "name": "sales_signout",
+      "path": "/signout",
+      "method": "get",
+      "auth": false,
+      "impl": "user.signout",
+      "comment": "用户退出"
+    }
+  ],
+  "statics": [
+    {
+      "name": "signin",
+      "path": "/signin",
+      "comment": "登录、退出"
+    }
+  ],
+  "dataModelSchema": [
+
+  ],
+  "configuration": {
+  },
+  "errorHandler": [
+  ]
+}

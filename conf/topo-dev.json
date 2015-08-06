@@ -5,14 +5,16 @@
         {
             "name": "baseService",
             "ip": "127.0.0.1",
-            "port": 5011,
+            "port": 5012,
             "protocol": "http",
-            "baseurl": "http://192.168.1.105:5011/sales",
+            "baseurl": "http://192.168.1.144:5011/sales",
             "workerno": 1,
             "applications": [
                 "framework",
                 "qrcode",
-                "install"
+                "install",
+                "map",
+                "signin"
             ]
         }
     ],

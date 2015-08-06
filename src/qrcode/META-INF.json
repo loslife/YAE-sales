@@ -14,112 +14,112 @@
             "name": "addActivity",
             "path": "/activity/addActivity/:activityName",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.addActivity",
             "comment": "添加活动"
         },{
             "name": "queryActivity",
             "path": "/activity/queryActivity",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.queryActivity",
             "comment": "查询所有活动"
         },{
             "name": "addTag",
             "path": "/activity/addTag/:tagName",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.addTag",
             "comment": "添加标签"
         },{
             "name": "queryAllTags",
             "path": "/activity/queryAllTags",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.queryAllTags",
             "comment": "查询所有标签"
         },{
             "name": "addEntities",
             "path": "/activity/addEntities",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.addEntities",
             "comment": "添加实体"
         },{
             "name": "queryAllEntities",
             "path": "/activity/queryAllEntities",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.queryAllEntities",
             "comment": "查询所有实体"
         },{
             "name": "delActivity",
             "path": "/activity/delActivity/:id",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.delActivity",
             "comment": "删除活动"
         },{
             "name": "updateActivity",
             "path": "/activity/updateActivity/:id",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.updateActivity",
             "comment": "更新活动"
         },{
             "name": "delEntity",
             "path": "/activity/delEntity/:id",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.delEntity",
             "comment": "删除二维码"
         },{
             "name": "updateEntity",
             "path": "/activity/updateEntity/:id",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.updateEntity",
             "comment": "更新二维码"
         },{
             "name": "delTag",
             "path": "/activity/delTag/:id",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.delTag",
             "comment": "删除标签"
         },{
             "name": "updateTag",
             "path": "/activity/updateTag/:id",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.updateTag",
             "comment": "更新标签"
         },{
             "name": "queryEntityHasTags",
             "path": "/activity/queryEntityHasTags",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.queryEntityHasTags",
             "comment": "查询实体拥有的标签"
         },{
             "name": "wxScan",
             "path": "/activity/wxScan",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.wxScan",
             "comment": "微信公众号被扫描"
         },{
             "name": "queryScanCount",
             "path": "/activity/queryScanCount",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.queryScanCount",
             "comment": "扫描统计"
         },{
             "name": "redirect",
             "path": "/activity/redirect",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "qrcode.redirect",
             "comment": "普通URL二维码被扫描"
         }
