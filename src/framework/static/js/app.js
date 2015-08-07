@@ -41,7 +41,7 @@ var app = angular.module('app', [
             app.constant = $provide.constant;
             app.value = $provide.value;
             $urlRouterProvider
-                .otherwise('/app/qrcode');
+                .otherwise('/signin/signin');
 
 
             $stateProvider
@@ -227,6 +227,19 @@ var app = angular.module('app', [
                                         ]);
                                     }
                                 );
+                            }]
+                    }
+                }).state('signin', {
+                    url: '/signin',
+                    template: '<div ui-view class="fade-in-right-big smooth"></div>'
+                })
+                .state('signin.signin', {
+                    url: '/signin',
+                    templateUrl: '/signin/signin.html',
+                    resolve: {
+                        deps: ['uiLoad',
+                            function (uiLoad) {
+                                return uiLoad.load(['/signin/signin.js']);
                             }]
                     }
                 });

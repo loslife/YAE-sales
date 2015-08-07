@@ -14,7 +14,7 @@
             "name": "getAllChannel",
             "path": "/install/getAllChannel",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.getAllChannel",
             "comment": "获取渠道列表"
         },{
@@ -28,28 +28,28 @@
             "name": "getCountChannel",
             "path": "/install/getCountChannel",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.getCountChannel",
             "comment": "获取渠道总数"
         },{
             "name": "addChannel",
             "path": "/install/addChannel",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.addChannel",
             "comment": "增加渠道"
         },{
             "name": "deleteChannel",
             "path": "/install/deleteChannel",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.deleteChannel",
             "comment": "删除渠道"
         },{
             "name": "getPersonByChannelId",
             "path": "/install/getPersonByChannelId",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.getPersonByChannelId",
             "comment": "根据渠道id查询专员"
         },{
@@ -63,7 +63,7 @@
             "name": "getCountChannel",
             "path": "/install/getCountPersonByChannelId",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.getCountPersonByChannelId",
             "comment": "根据渠道id统计专员数量"
         },{
@@ -77,42 +77,42 @@
             "name": "deletePerson",
             "path": "/install/deletePerson",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.deletePerson",
             "comment": "删除专员"
         },{
             "name": "addPerson",
             "path": "/install/addPerson",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.addPerson",
             "comment": "新增专员"
         },{
             "name": "updatePerson",
             "path": "/install/updatePerson",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.updatePerson",
             "comment": "更新专员"
         },{
             "name": "installRecord",
             "path": "/install/installRecord",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.installRecord",
             "comment": "推荐码入库"
         },{
             "name": "getInstallRecord",
             "path": "/install/getInstallRecord",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.getInstallRecord",
             "comment": "根据id获取推荐码入库情况"
         },{
             "name": "getInstallRecordCount",
             "path": "/install/getInstallRecordCount",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.getInstallRecordCount",
             "comment": "根据id获取推荐码入库总数"
         },{
@@ -133,21 +133,21 @@
             "name": "editChannel",
             "path": "/install/editChannel",
             "method": "post",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.editChannel",
             "comment": "修改渠道"
         },{
             "name": "getAllParent",
             "path": "/install/getAllParent",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.getAllParent",
             "comment": "获取所有一级专员"
         },{
             "name": "recentInstallRecord",
             "path": "/install/recentInstallRecord",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.recentInstallRecord",
             "comment": "专员一周装机情况"
         },{
@@ -161,7 +161,7 @@
             "name": "getRecentRecord",
             "path": "/install/getRecentRecord",
             "method": "get",
-            "auth": false,
+            "auth": "yilos-sales",
             "impl": "installService.getRecentRecord",
             "comment": "整体一周装机情况"
         }
