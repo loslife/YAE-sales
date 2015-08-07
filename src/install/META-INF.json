@@ -49,7 +49,7 @@
             "name": "getPersonByChannelIdWithoutLimit",
             "path": "/install/getPersonByChannelIdWithoutLimit",
             "method": "get",
-            "auth": "yilos-sales",
+            "auth": false,
             "impl": "installService.getPersonByChannelIdWithoutLimit",
             "comment": "根据渠道id查询专员无分页"
         },{
@@ -63,7 +63,7 @@
             "name": "getPersonById",
             "path": "/install/getPersonById",
             "method": "get",
-            "auth": "yilos-sales",
+            "auth": false,
             "impl": "installService.getPersonById",
             "comment": "根据id查询专员"
         },{
@@ -112,14 +112,14 @@
             "name": "getPersonInstallRecord",
             "path": "/install/getPersonInstallRecord",
             "method": "get",
-            "auth": "yilos-sales",
+            "auth": false,
             "impl": "installService.getPersonInstallRecord",
             "comment": "按照日期统计个人装机情况"
         },{
             "name": "getChannelById",
             "path": "/install/getChannelById",
             "method": "get",
-            "auth": "yilos-sales",
+            "auth": false,
             "impl": "installService.getChannelById",
             "comment": "根据id获取渠道信息"
         },{
@@ -147,7 +147,7 @@
             "name": "getChannelRecentRecord",
             "path": "/install/getChannelRecentRecord",
             "method": "get",
-            "auth": "yilos-sales",
+            "auth": false,
             "impl": "installService.getChannelRecentRecord",
             "comment": "渠道一周装机情况"
         },{
